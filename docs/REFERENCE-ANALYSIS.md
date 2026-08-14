@@ -1,4 +1,5 @@
-# QRPOC Referans Analizi: MenuTiger
+# MenuTiger Referans Analizi
+*Kapsam: yalniz MenuTiger gozlemleri. QRPOC kararlari, gereksinimleri ve eslemeleri bu dosyanin kapsami disindadir.*
 
 Tarih: 2026-08-14. Kaynaklar: canli portala login'li gezi (app.menutiger.com, "Ramiz'in Yeri" test hesabi, salt okuma), ekran goruntuleri `references/portal/` ve `references/customer/`, marketing sitesine hizli bakis, musteri menu app'i (menutigr.com). Figma dosyasi bos cikti; klasordeki .h2d dosyalari sifreli oldugu icin acilamadi (detay `DECISIONS.md`).
 
@@ -60,17 +61,17 @@ Topbar (soldan saga): sidebar daraltma, sari "Upgrade your plan", koyu tema togg
 
 Her sayfanin ustunde ayni baslik bandi: solda h2 baslik + tek satir aciklama, sagda QR ikonu + menu linki kopyalama + teal "OPEN APP" butonu. Bu bant portalin her ekraninda ayni yerde duruyor ve musteri menusune gecisi surekli bir tik uzakta tutuyor.
 
-### 1.2 Musteri app'i (ikincil yuzey)
+### 1.2 Musteri app'i
 
 Giris URL'i restoran slug'i (menutigr.com/ramizin-yeri-...). Once website-builder ciktisi olan vitrin sayfasi (hero: "Welcome to Ramiz'in Yeri" + Our Menu butonu), oradan `/menu` rotasina geciliyor. Menu ekrani: ust bar (hamburger, logo, arama, rozetli sepet), kapak fotografi, kategori chip carousel'i, kategori basligi + 2 sutun item kartlari, altta sabit nav. Hamburger cekmecesi: Orders, Cart, Feedback, **Localizations**, Login. Item detayi ayri ekran: tam genislik foto, aciklama, meta satirlari (hazirlik suresi, boyut, siparis turu), fiyat varyantlari listesi, **Ozel Talimatlar** serbest metin alani, yapiskan alt bar (Toplam + SEPETE EKLE + adet). Tema restoranin kendi markasi (bu hesapta siyah/sari); portal temasindan tamamen bagimsiz.
 
 Kritik baglam ayrimi: iki giris modu ayni app'in iki farkli halini aciyor.
 - **Restoran linki** (menutigr.com/<slug>): online menu modu. Alt nav Home / Orders / Cart. Checkout musteri hesabi ister (guest checkout kapaliysa login duvari).
-- **Masa QR'i** (menutigr.com/<uid>, ornekte /xaKQ): dine-in modu. Alt nav **Orders / Hot actions / Cart** olur; Hot actions yalniz masa baglaminda gorunur. Checkout login istemez: dogrudan Payment ekranina gider. QRPOC'un no-login vaadi bu modun karsiligi.
+- **Masa QR'i** (menutigr.com/<uid>, ornekte /xaKQ): dine-in modu. Alt nav **Orders / Hot actions / Cart** olur; Hot actions yalniz masa baglaminda gorunur. Checkout login istemez: dogrudan Payment ekranina gider.
 
 ### 1.3 Marketing site (kisa not)
 
-menutiger.com: Features (11 alt sayfa: QR Code Menu, Online Food Order System, Table-side Ordering, Website Builder, Website & Menu Templates, Analytics & Data Insight, Integrations, Branding & White Label, Feedback Management, Kitchen Display System, Marketing Tools), E-books, Blog, POS (coming soon), Pricing, FAQ. Pricing 4 katman: Freemium $0 (10 masa, 1 store), Regular $17, Advanced $46 (KDS burada acilir), Premium $119 (Table Management + white-label). Feature adlandirmalari QRPOC ekran adlari icin dogrudan kullanilabilir sozluk niteliginde. Yardim merkezi yok; FAQ sayfasi bu rolu goruyor.
+menutiger.com: Features (11 alt sayfa: QR Code Menu, Online Food Order System, Table-side Ordering, Website Builder, Website & Menu Templates, Analytics & Data Insight, Integrations, Branding & White Label, Feedback Management, Kitchen Display System, Marketing Tools), E-books, Blog, POS (coming soon), Pricing, FAQ. Pricing 4 katman: Freemium $0 (10 masa, 1 store), Regular $17, Advanced $46 (KDS burada acilir), Premium $119 (Table Management + white-label). Yardim merkezi yok; FAQ sayfasi bu rolu goruyor.
 
 ---
 
@@ -102,16 +103,16 @@ Tek satirlik aciklama + Modifier Groups coklu secim dropdown'u. Gruplar global o
 "Text localization" basligi + dil basina akordeon (bu hesapta "Turk"). Akordeon acilinca o dile ait Name ve Description (zengin metin) alanlari. Ceviri ana formdan tamamen ayri tutulmus.
 
 **Modifier group formu** (`portal/menus-03-modifier-group-form.png`)
-Name*, Type (Optional/Required radio), "Allow adding same choice multiple times" checkbox'i, Modifiers tablosu (Name / Price / Unit kolonlari, satir silme, satir ekleme). Ikinci sekme yine Localize. QRPOC'un derin ozellestirme modelinin birebir karsiligi.
+Name*, Type (Optional/Required radio), "Allow adding same choice multiple times" checkbox'i, Modifiers tablosu (Name / Price / Unit kolonlari, satir silme, satir ekleme). Ikinci sekme yine Localize.
 
 **Orders** (`portal/orders-01.png`, dolu hali `orders-02-with-order.png`, durum menusu `orders-03-status-dropdown.png`, `orders-04-inprogress.png`)
-"Food orders / Order Monitoring and History". Orders / Deleted Orders sekmeleri. Filtre satiri: Invoice ID araması + store/odeme/teslimat/menu dropdown'lari + teal Apply Filter + outline Reset Filter. Tablo kolonlari: Invoice ID, Payment method, Total, Date, Time, Delivery method, Paid status, Order status. Dolu satirda: Payment "Cash" chip'i; Delivery method hucresi iki chip (DINE-IN + masa adi "Masa 1"); Paid status kirmizi "Not Paid" dropdown'u; Order status sari "Pending" dropdown'u (secenekler: Pending / In-Progress / Completed); satir sonunda bilgi, fis ve sil ikonlari. Durum ve odeme, tabloyu terk etmeden satir ici dropdown'larla yonetiliyor; bu, QRPOC siparis yonetiminin cekirdek etkilesim kalibi.
+"Food orders / Order Monitoring and History". Orders / Deleted Orders sekmeleri. Filtre satiri: Invoice ID araması + store/odeme/teslimat/menu dropdown'lari + teal Apply Filter + outline Reset Filter. Tablo kolonlari: Invoice ID, Payment method, Total, Date, Time, Delivery method, Paid status, Order status. Dolu satirda: Payment "Cash" chip'i; Delivery method hucresi iki chip (DINE-IN + masa adi "Masa 1"); Paid status kirmizi "Not Paid" dropdown'u; Order status sari "Pending" dropdown'u (secenekler: Pending / In-Progress / Completed); satir sonunda bilgi, fis ve sil ikonlari. Durum ve odeme, tabloyu terk etmeden satir ici dropdown'larla yonetiliyor.
 
 **Table Management** (`portal/table-management-01.png`, `table-management-02-locked.png`)
 Premium kilidi: tam ekran upsell modali (video + turuncu "Claim 14-Day Free Trial" + Upgrade / Compare plans); kapatinca bolumden cikariyor. Arkada: store karti + View table orders / Configure tables. Masa listesi bu hesapta gorulemedi; Stores > Tables sekmesi kismi ikame (asagida).
 
 **Kitchen Display** (`portal/kitchen-display-01.png`)
-Advanced kilidi, ayni upsell kalibi (30 gun deneme). Kilit arkasinda: "Select Your Station" + Kitchen / Bar istasyon butonlari; "Each screen should be assigned to a station. This setting is saved to this device only." Cihaz basina istasyon atama konsepti QRPOC KDS'i icin dogrudan alinabilir.
+Advanced kilidi, ayni upsell kalibi (30 gun deneme). Kilit arkasinda: "Select Your Station" + Kitchen / Bar istasyon butonlari; "Each screen should be assigned to a station. This setting is saved to this device only."
 
 **Stores > Tables** (`portal/stores-01-list.png`; dolu ornekler `stores-06-table-created.png`, `stores-07-table-qr-popover.png`, `stores-08-delete-confirm.png`)
 Master-detail. Solda Stores paneli (arama + kilit ikonu + store satirlari). Tables sekmesi: mavi bilgi banner'i ("Changing the QR style will apply to all tables across all floors..."), "+ Add Floor" outline butonu, sag ustte "Customize QR Code", kat filtresi, masa listesi. Kat > masa > QR hiyerarsisi. Canli testte olculenler: kat olusturma kucuk modal (Floor Name + Cancel/Create); masa ekleme inline form (breadcrumb + Name satirlari + Save, coklu ekleme destekli); masa karti uzerinde QR onizleme popover'i, indirme ve kebab (Edit / Move to Floor); satir checkbox'i secilince ust seritte toplu aksiyonlar beliriyor ("Download QR Codes" + kirmizi "Delete"); silme onayi kisa modal ("You can't undo this action" + Cancel/Confirm). Her masanin QR'i kisa URL'e gider: menutigr.com/<uid>.
@@ -135,7 +136,7 @@ Customers karti: Enable Customer Tip / Enable Cancel Order toggle'lari. Invoice 
 QR ozellestirici: solda akordeon paneller (Logo, Pattern, Eyes, Colors, Frame), sagda canli QR onizleme + indirme + kopyalama + hedef URL. Konfigurasyonu solda, sonucu sagda canli gosteren iki kolon kalibi.
 
 **Hot Actions** (`portal/hot-actions-01.png`, istek logu `hot-actions-02-requests.png`)
-QRPOC personel isteklerinin birebir karsiligi. Create Hot Actions sekmesi: tablo Header / Image / Message + satir basina toggle, edit, delete. Hazir tanimlar: "Call someone", "Call for notes change", "Call to verify bill", "Call to clean table". Add New kilitli (ozel aksiyon ust planda). Hot Action Requests sekmesi gelen isteklerin logu: Today/Week/Month segmenti + filtreler; tablo Icon / Header / **Table** / Status (sari "Active" dropdown) / Requested On / Approved On. Musterinin masadan gonderdigi istek buraya masa adiyla dusuyor; canli dogrulandi.
+Create Hot Actions sekmesi: tablo Header / Image / Message + satir basina toggle, edit, delete. Hazir tanimlar: "Call someone", "Call for notes change", "Call to verify bill", "Call to clean table". Add New kilitli (ozel aksiyon ust planda). Hot Action Requests sekmesi gelen isteklerin logu: Today/Week/Month segmenti + filtreler; tablo Icon / Header / **Table** / Status (sari "Active" dropdown) / Requested On / Approved On. Musterinin masadan gonderdigi istek buraya masa adiyla dusuyor; canli dogrulandi.
 
 **Marketing > Website** (`portal/marketing-01-website.png`)
 Website builder: solda bolum listesi, sagda bolum toggle'i + Configuration / Localize alt sekmeleri; alan etiketi solda-icerde kalibi (Button Link, Redirect to, Heading, Description).
@@ -147,7 +148,7 @@ Ucu de ayni liste kalibi: Add New + bilgi pill'i + tablo + empty state. Promotio
 Scheduler: zamanlanmis rapor e-postalari (Name / Frequency / Report) + Download. Newsletter signups ve Feedback ayri sekmeler.
 
 **Accounting** (`portal/accounting-01.png`)
-Store + tarih filtresi, 5 acik-teal istatistik cipi (Total sales, Total discounts, Total orders, Total tax, Total tip; etiket kartin ust kenarina oturuyor), genis tablo, Download. Not: alt baslikta ham i18n anahtari ("accounting-description") ve kucuk harf kolon adlari (subtotal, tax) gorunuyor; kopyalanmamasi gereken ozensizlik ornekleri.
+Store + tarih filtresi, 5 acik-teal istatistik cipi (Total sales, Total discounts, Total orders, Total tax, Total tip; etiket kartin ust kenarina oturuyor), genis tablo, Download. Not: alt baslikta ham i18n anahtari ("accounting-description") ve kucuk harf kolon adlari (subtotal, tax) gorunuyor; gozlenen ozensizlik ornekleri.
 
 **Integrations** (`portal/integrations-01.png`)
 Kart grid'i: Stripe / PayPal / Adyen ("Connect" outline butonlu), **Cash** (toggle, bu hesapta acik) ve Custom Payment (toggle + ayar disli). "Kasada ode" akisinin kaynagi Cash entegrasyonunun acik olmasi. White Label ve Printers sekmeleri kilitli.
@@ -191,7 +192,7 @@ Portal arayuz dili dropdown'u: English, Espanol, Francais, Deutsch, Italiano, Ne
 
 ## 3. "Temiz ve ferah" hissin anatomisi
 
-Taklit edilecek sey bu bolum. His su somut kararlardan cikiyor:
+Bu his su somut tasarim kararlarindan cikiyor:
 
 1. **Uc katmanli zemin, cizgisiz ayrim.** Acik gri kanvas (#DCE0E4) ustunde beyaz yuzeyler; sidebar ve topbar da beyaz. Kartlarda golge yok denecek kadar az; ayrimi renk farki yapiyor (gri/beyaz), border veya golge degil. Sonuc: cok bolme var ama gorsel gurultu yok.
 2. **Tek vurgu rengi, katı gorev dagilimi.** Teal yalnizca aksiyon ve aktif durum (birincil buton, secili sekme, secili nav item'i, toggle-acik). Bir ekranda ayni anda en fazla 1-2 dolu teal buton var. Sari yalnizca plan/upsell (Upgrade, New rozeti). Kirmizi yalnizca yikici aksiyon ve uyari rozetleri. Geri kalan her sey notr gri tonlari. Renk her gorundugunde bir anlam tasidigi icin ekran sakin kaliyor.
@@ -204,7 +205,7 @@ Taklit edilecek sey bu bolum. His su somut kararlardan cikiyor:
 9. **Yardim her yerde ama sessiz.** Soru isareti ikonlu outline hint pill'leri baslik hizasinda duruyor, icerigi isgal etmiyor. Videolu onboarding yalniz kilit/ilk kullanim anlarinda modal oluyor.
 10. **Ferahligin istisnasi bilincli:** Dashboard'daki lacivert ve teal-gradient stat kartlari sayfadaki tek "agir" renk blogu; sayilara agirlik vermek icin kullanilmis. Bu kontrast, geri kalan her seyin ne kadar acik oldugunu vurguluyor.
 
-QRPOC icin ozet kural: az renk + cok bosluk + tek font + cizgisiz katman ayrimi + her ekranda ayni iskelet.
+Ozet: az renk + cok bosluk + tek font + cizgisiz katman ayrimi + her ekranda ayni iskelet.
 
 ---
 
@@ -231,27 +232,21 @@ QRPOC icin ozet kural: az renk + cok bosluk + tek font + cizgisiz katman ayrimi 
 
 ## 5. Multilingual pattern
 
-MenuTiger dili uc bagimsiz katmanda cozmus; QRPOC'un TR/EN modeli icin dogrudan sablon:
+MenuTiger dili uc bagimsiz katmanda cozmus:
 
 1. **Portal arayuz dili (kullanici tercihi).** Topbar'daki Translate ikonu sabit urun dilleri listesini aciyor (English, Espanol, Francais, Deutsch, Italiano, Nederlands, Portugues, Arapca...). Restoranin icerik dillerinden tamamen bagimsiz; sadece back office chrome'unu cevirir.
 2. **Icerik dilleri (restoran konfigurasyonu).** Settings > Restaurant icinde: Languages coklu secim (chip'ler: English + Turk), Default language, Currency. Burada secilen liste her yerde ceviri yuvalarini turetir.
 3. **Icerik cevirisi girisi (varlik basina Localize sekmesi).** Ana form her zaman tek dilde (varsayilan dil). Ceviri, item / modifier group / website bolumu gibi her varlikta ayri bir "Localize" sekmesi: dil basina akordeon, icinde o dilin Name + Description alanlari. Ceviri girilmezse musteri tarafi varsayilan dile duser; otomatik ceviri yok.
 4. **Musteri dil secimi.** Hamburger cekmecesinde "Localizations" tam ekran listesi: native ad + parantezde Ingilizce ad, secili olan vurgulu. Secim chrome dizelerini aninda cevirir (Ana Sayfa / Siparisler / Sepet); icerik ceviri varsa cevrilir, yoksa varsayilan kalir.
 
-QRPOC'a uyarlama notlari:
-- Iki dilli (TR/EN) sabit bir urunde 1. ve 2. katman birlesebilir; ama "icerik dili" ile "arayuz dili" ayriminin kendisi korunmali (musteri Ingilizce chrome + Turkce icerik gorebilmeli ve tersi).
-- **Karar (2026-08-14, Yaren):** menu editorunde TR ve EN alanlari ayni formda yan yana girilir; MenuTiger'in ayri Localize sekmesi kalibi alinmaz. Fallback kurali yine gecerli: bos birakilan dil, dolu dile duser.
-- Fallback kurali aynen alinmali: cevirisi olmayan icerik varsayilan dilde gosterilir, bos gosterilmez.
-- Musteri switcher'i MenuTiger'da cekmecede gomulu; QRPOC brief'i "sessiz ama erisilir" diyor ve scan landing + header'da istiyor. Cekmece-only yerlesimi kopyalanmayacak.
-
 ---
 
 ## 6. Design token cikarimi (roller)
 
-Olculen degerler (getComputedStyle, 1440 px viewport) ve rol sistemi. Amac deger kopyalamak degil; QRPOC kendi degerlerini bu rollere koyacak.
+Olculen degerler (getComputedStyle, 1440 px viewport) ve rol sistemi. Amac deger kopyalamak degil, rol sistemini cikarmak.
 
 **Tipografi**
-- Tek aile: Roboto (QRPOC kendi fontunu secer; Turkce karakter kapsami sart).
+- Tek aile: Roboto.
 - Roller: `page-title` 24/500, `body` ve `nav-item` 14/400, `button` ve `table-header` 14/500, `helper` ~12/400. Buton metinlerinde textTransform none (OPEN APP istisna, uppercase).
 - Hiyerarsi agirlikla degil renk tonuyla: `text-strong` #121926, `text-body` #364152, `text-muted` gri.
 
@@ -259,49 +254,16 @@ Olculen degerler (getComputedStyle, 1440 px viewport) ve rol sistemi. Amac deger
 - `action-primary`: teal #2CA58D (butonlar, aktif sekme, secili nav, toggle-on). Ikincil varyant #14B8A6 (OPEN APP).
 - `canvas`: #DCE0E4; `surface`: #FFFFFF; `surface-tint`: acik teal (secili nav pill'i, secili kategori).
 - `border-subtle`: #EEEEEE (tablo ayiraclari, satir kutulari).
-- `upsell`: sari #FFE57F (Upgrade, New) ve turuncu gradient (deneme CTA'lari). QRPOC'ta plan/upsell yok; bu rol muhtemelen dusuyor.
+- `upsell`: sari #FFE57F (Upgrade, New) ve turuncu gradient (deneme CTA'lari).
 - `destructive`: kirmizi (cop ikonlari, rozetler, Feedback sekmesi).
 - `success`: yesil outline ("Connected").
 - `info`: teal outline + soru ikonu (hint pill'leri, bilgi banner'lari).
 - `stat-emphasis`: lacivert (#0D1B3E civari) ve teal gradient; yalniz dashboard stat kartlari.
-- Musteri tarafinda tema restoran markasina ait (ornekte siyah + sari aksan); portal paletinden bagimsiz. QRPOC'ta da musteri yuzeyi ayri paletle kurulacak.
+- Musteri tarafinda tema restoran markasina ait (ornekte siyah + sari aksan); portal paletinden bagimsiz.
 
 **Bicim**
 - Radius: `card` 8 px, `control` 4-8 px, `pill` tam yuvarlak.
 - Golge: yuzeylerde yok (katman ayrimi renkle); butonlarda hafif MUI elevation; yalniz modallarda belirgin golge.
 - Spacing ritmi 4/8 grid: kanvas 20, kart ici 24, alan arasi 16, liste satiri ~72, topbar 65, sidebar 260.
 
-**Altyapi notu:** portal MUI (Material UI) tabanli hazir bir admin iskeleti uzerine kurulmus (Berry tarzi). QRPOC shadcn/ui + Tailwind ile ayni ROLLERI kuracak; MUI'nin floating label veya elevation detaylarini birebir taklit etmeye calismayacak.
-
----
-
-## 7. QRPOC esleme tablosu
-
-| QRPOC ekrani (Wave) | MenuTiger temeli | Ekran goruntusu | Not |
-|---|---|---|---|
-| W1-1 Menu editor | Menu editoru: iki panel + inline item editoru + modifier groups | `menu-editor-01..04`, `menus-03` | Kalip aynen; iki dilli giris karari acik (Localize sekmesi vs yan yana alanlar) |
-| W1-2 QR ve masa eslemesi | Stores > Tables (Add Floor, kat filtresi, Customize QR Code) + QR ozellestirici | `stores-01`, `settings-05` | Kat kavrami QRPOC kapsaminda yok; masa listesi + masa basina QR + print view yeter |
-| W1-3 Kitchen display | KDS istasyon secimi (cihaz basina) + upsell arkasi yapi; canli panosu kilitliydi | `kitchen-display-01` | Kanban kolonlu pano marketing gorsellerinden + brief kurallarindan turetilecek (yuksek kontrast, 2 m okunurluk) |
-| W1-4 Analytics dashboard | Dashboard (segment + tarih + store filtresi + stat kartlari + grafikler) + Accounting cipleri | `dashboard-01`, `accounting-01` | 3 mock lokasyon switcher'i = store filtresi dropdown kalibi |
-| W2-5 Scan landing | Masa QR'i kisa URL'e gider (menutigr.com/<uid>), dogrudan masa baglamli menu acilir; vitrin sayfasi ayri | `customer-01`, `customer-12` | QRPOC masa bagalami onayini ekler; dil switcher'i burada gorunur olacak |
-| W2-6 Menu browse | Musteri menu: chip carousel + bolumlu 2 sutun grid + alt nav (dine-in modda Orders / Hot actions / Cart) | `customer-02`, `customer-12` | Alerjen/diyet rozetleri QRPOC'ta karta cikar (MenuTiger kartta gostermiyor) |
-| W2-7 Item detail | Item detayi: foto + meta + fiyat varyantlari + Ozel Talimatlar + yapiskan toplam bari | `customer-06..08` | Malzeme cikar/ekle seviyesi icin modifier group + serbest not birlesimi |
-| W2-8 Cart ve onay | My cart + Payment ekrani: Cash + DINEIN ozetli siparis onayi, login'siz | `customer-09`, `customer-16..18` | "Kasada veya garsona ode" = Cash odeme secenegi; dine-in modda login duvari yok, birebir dogrulandi |
-| W2-9 Order status | Active orders listesi + uc adimli stepper (PENDING / INPROGRESS / COMPLETED); portal dropdown'u ile canli senkron | `customer-19..21`, `orders-02..04` | QRPOC durum dili: Alindi / Hazirlaniyor / Hazir; stepper kalibi aynen |
-| W2-10 Personel istekleri | Musteri Requests ekrani (4 kart + REQUEST) + portal Hot Action Requests logu (masa adiyla) | `customer-13..15`, `hot-actions-01..02` | Birebir temel; QRPOC musteri tarafinda gorunur onay state'i ekler |
-| W3-11 Musteri profili / hafiza | Dogrudan karsilik yok | | Uyarlama: toggle satir kutulari (ayarlar), chip coklu secim (alerjiler; Languages chip kalibi), item rozetleri (uyari) |
-| W3-12 Pre-arrival | Dogrudan karsilik yok | | Uyarlama: store secimi (master-detail listesi), Opening Hours satir kalibi (saat secimi), menu browse akisi |
-| W3-13 Self-service | Dogrudan karsilik yok | | Uyarlama: order status + gise numarasi icin stat-kart tipografisi (dashboard buyuk sayi stili) + KDS kontrast kurallari |
-
-Genel kural: MenuTiger'dan alinan sey iskelet ve kaliplar (baslik bandi, sekme seridi, liste kalibi, inline editor, toggle satirlari, empty state, master-detail). Alinmayan: logo, ikon seti, illustrasyonlar, marka renkleri, yazili copy, upsell/gating mekanizmalari.
-
----
-
-## 8. Acik sorular ve cozumleri (2026-08-14 guncellemesi)
-
-1. **Iki dilli menu girisi:** KARAR: TR ve EN alanlari ayni formda yan yana. Localize sekmesi kalibi alinmayacak.
-2. **Gating kaliplari:** Yaren kararsiz kaldi; en basit tutarli yorum uygulanacak: prototype'ta plan/kilit/upsell kaliplari tamamen kapsam disi. Ileride istenirse ayri karar olur.
-3. **KDS gorsel kaynagi:** ONAYLANDI: pano tasarimi marketing gorselleri + brief kurallarindan turetilecek; deneme baslatilmayacak.
-4. **Cart/checkout/status:** COZULDU: masa QR'i uzerinden dine-in akisi login'siz calisti; payment, siparis onayi, order status stepper'i, portal siparis yonetimi ve hot action dongusu ucundan ucuna belgelendi (`customer-12..21`, `orders-02..04`, `hot-actions-02`). Online moddaki login duvari ve calismayan guest checkout toggle'i ayrica not edildi.
-5. **Dashboard stat kartlari:** ERTELENDI: marka yonu belirlenince karar verilecek.
-6. **h2d dosyalari:** Import adimlari yazildi: `references/h2d-figma-import.md`. Import, html.to.design eklentisinin Figma icinde elle calistirilmasini gerektiriyor; MCP uzerinden otomatiklestirilemiyor.
+**Altyapi notu:** portal MUI (Material UI) tabanli hazir bir admin iskeleti uzerine kurulmus (Berry tarzi).
