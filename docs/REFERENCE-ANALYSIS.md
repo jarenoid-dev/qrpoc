@@ -2,7 +2,9 @@
 
 Tarih: 2026-08-14. Kaynaklar: canli portala login'li gezi (app.menutiger.com, "Ramiz'in Yeri" test hesabi, salt okuma), ekran goruntuleri `references/portal/` ve `references/customer/`, marketing sitesine hizli bakis, musteri menu app'i (menutigr.com). Figma dosyasi bos cikti; klasordeki .h2d dosyalari sifreli oldugu icin acilamadi (detay `DECISIONS.md`).
 
-Onemli sinir: hesap Freemium oldugu icin Table Management ve Kitchen Display canli olarak kilitliydi; bu iki ekran icin ancak kilit arkasinda gorunen kadar + upsell modallari belgelenebildi. Musteri tarafinda siparis verilmedigi icin cart sonrasi akis (checkout, order status) goruntulenemedi.
+Onemli sinir: hesap Freemium oldugu icin Table Management ve Kitchen Display canli olarak kilitliydi; bu iki ekran icin ancak kilit arkasinda gorunen kadar + upsell modallari belgelenebildi.
+
+Guncelleme (ayni gun, Yaren onayi ile): masa QR akisi ucundan ucuna canli test edildi. Gecici bir kat + masa olusturuldu ("Test" / "Masa 1"), masanin QR'i cozuldu (kisa URL kalibi: menutigr.com/<uid>), dine-in siparis login'siz verildi (Cash), portalda durum ilerletildi ve musteri stepper'inin canli guncellendigi goruldu; hot action istegi de ayni masadan gonderilip portal logunda izlendi. Test kati ve masa sonra silindi. Boylece cart, payment, order status ve hot actions ekranlarinin tamami birincil kaynaktan belgelendi.
 
 ---
 
@@ -60,7 +62,11 @@ Her sayfanin ustunde ayni baslik bandi: solda h2 baslik + tek satir aciklama, sa
 
 ### 1.2 Musteri app'i (ikincil yuzey)
 
-Giris URL'i restoran slug'i (menutigr.com/ramizin-yeri-...). Once website-builder ciktisi olan vitrin sayfasi (hero: "Welcome to Ramiz'in Yeri" + Our Menu butonu), oradan `/menu` rotasina geciliyor. Menu ekrani: ust bar (hamburger, logo, arama, rozetli sepet), kapak fotografi, kategori chip carousel'i, kategori basligi + 2 sutun item kartlari, altta sabit nav (Home / Orders / Cart). Hamburger cekmecesi: Orders, Cart, Feedback, **Localizations**, Login. Item detayi ayri ekran: tam genislik foto, aciklama, meta satirlari (hazirlik suresi, boyut, siparis turu), fiyat varyantlari listesi, **Ozel Talimatlar** serbest metin alani, yapiskan alt bar (Toplam + SEPETE EKLE + adet). Tema restoranin kendi markasi (bu hesapta siyah/sari); portal temasindan tamamen bagimsiz.
+Giris URL'i restoran slug'i (menutigr.com/ramizin-yeri-...). Once website-builder ciktisi olan vitrin sayfasi (hero: "Welcome to Ramiz'in Yeri" + Our Menu butonu), oradan `/menu` rotasina geciliyor. Menu ekrani: ust bar (hamburger, logo, arama, rozetli sepet), kapak fotografi, kategori chip carousel'i, kategori basligi + 2 sutun item kartlari, altta sabit nav. Hamburger cekmecesi: Orders, Cart, Feedback, **Localizations**, Login. Item detayi ayri ekran: tam genislik foto, aciklama, meta satirlari (hazirlik suresi, boyut, siparis turu), fiyat varyantlari listesi, **Ozel Talimatlar** serbest metin alani, yapiskan alt bar (Toplam + SEPETE EKLE + adet). Tema restoranin kendi markasi (bu hesapta siyah/sari); portal temasindan tamamen bagimsiz.
+
+Kritik baglam ayrimi: iki giris modu ayni app'in iki farkli halini aciyor.
+- **Restoran linki** (menutigr.com/<slug>): online menu modu. Alt nav Home / Orders / Cart. Checkout musteri hesabi ister (guest checkout kapaliysa login duvari).
+- **Masa QR'i** (menutigr.com/<uid>, ornekte /xaKQ): dine-in modu. Alt nav **Orders / Hot actions / Cart** olur; Hot actions yalniz masa baglaminda gorunur. Checkout login istemez: dogrudan Payment ekranina gider. QRPOC'un no-login vaadi bu modun karsiligi.
 
 ### 1.3 Marketing site (kisa not)
 
@@ -98,8 +104,8 @@ Tek satirlik aciklama + Modifier Groups coklu secim dropdown'u. Gruplar global o
 **Modifier group formu** (`portal/menus-03-modifier-group-form.png`)
 Name*, Type (Optional/Required radio), "Allow adding same choice multiple times" checkbox'i, Modifiers tablosu (Name / Price / Unit kolonlari, satir silme, satir ekleme). Ikinci sekme yine Localize. QRPOC'un derin ozellestirme modelinin birebir karsiligi.
 
-**Orders** (`portal/orders-01.png`)
-"Food orders / Order Monitoring and History". Orders / Deleted Orders sekmeleri. Filtre satiri: Invoice ID araması + store/odeme/teslimat/menu dropdown'lari + teal Apply Filter + outline Reset Filter. Tablo kolonlari: Invoice ID, Payment method, Total, Date, Time, Delivery method, Paid status, Order status.
+**Orders** (`portal/orders-01.png`, dolu hali `orders-02-with-order.png`, durum menusu `orders-03-status-dropdown.png`, `orders-04-inprogress.png`)
+"Food orders / Order Monitoring and History". Orders / Deleted Orders sekmeleri. Filtre satiri: Invoice ID araması + store/odeme/teslimat/menu dropdown'lari + teal Apply Filter + outline Reset Filter. Tablo kolonlari: Invoice ID, Payment method, Total, Date, Time, Delivery method, Paid status, Order status. Dolu satirda: Payment "Cash" chip'i; Delivery method hucresi iki chip (DINE-IN + masa adi "Masa 1"); Paid status kirmizi "Not Paid" dropdown'u; Order status sari "Pending" dropdown'u (secenekler: Pending / In-Progress / Completed); satir sonunda bilgi, fis ve sil ikonlari. Durum ve odeme, tabloyu terk etmeden satir ici dropdown'larla yonetiliyor; bu, QRPOC siparis yonetiminin cekirdek etkilesim kalibi.
 
 **Table Management** (`portal/table-management-01.png`, `table-management-02-locked.png`)
 Premium kilidi: tam ekran upsell modali (video + turuncu "Claim 14-Day Free Trial" + Upgrade / Compare plans); kapatinca bolumden cikariyor. Arkada: store karti + View table orders / Configure tables. Masa listesi bu hesapta gorulemedi; Stores > Tables sekmesi kismi ikame (asagida).
@@ -107,8 +113,8 @@ Premium kilidi: tam ekran upsell modali (video + turuncu "Claim 14-Day Free Tria
 **Kitchen Display** (`portal/kitchen-display-01.png`)
 Advanced kilidi, ayni upsell kalibi (30 gun deneme). Kilit arkasinda: "Select Your Station" + Kitchen / Bar istasyon butonlari; "Each screen should be assigned to a station. This setting is saved to this device only." Cihaz basina istasyon atama konsepti QRPOC KDS'i icin dogrudan alinabilir.
 
-**Stores > Tables** (`portal/stores-01-list.png`)
-Master-detail. Solda Stores paneli (arama + kilit ikonu + store satirlari). Tables sekmesi: mavi bilgi banner'i ("Changing the QR style will apply to all tables across all floors..."), "+ Add Floor" outline butonu, sag ustte "Customize QR Code", kat filtresi ("All (0)"), masa listesi (bos). Kat > masa > QR hiyerarsisi.
+**Stores > Tables** (`portal/stores-01-list.png`; dolu ornekler `stores-06-table-created.png`, `stores-07-table-qr-popover.png`, `stores-08-delete-confirm.png`)
+Master-detail. Solda Stores paneli (arama + kilit ikonu + store satirlari). Tables sekmesi: mavi bilgi banner'i ("Changing the QR style will apply to all tables across all floors..."), "+ Add Floor" outline butonu, sag ustte "Customize QR Code", kat filtresi, masa listesi. Kat > masa > QR hiyerarsisi. Canli testte olculenler: kat olusturma kucuk modal (Floor Name + Cancel/Create); masa ekleme inline form (breadcrumb + Name satirlari + Save, coklu ekleme destekli); masa karti uzerinde QR onizleme popover'i, indirme ve kebab (Edit / Move to Floor); satir checkbox'i secilince ust seritte toplu aksiyonlar beliriyor ("Download QR Codes" + kirmizi "Delete"); silme onayi kisa modal ("You can't undo this action" + Cancel/Confirm). Her masanin QR'i kisa URL'e gider: menutigr.com/<uid>.
 
 **Stores > Users** (`portal/stores-04-users.png`)
 Add New + tablo: First name / Last name / Email / Role. Store seviyesinde rol bazli personel modeli.
@@ -128,8 +134,8 @@ Customers karti: Enable Customer Tip / Enable Cancel Order toggle'lari. Invoice 
 **Settings > Restaurant QR Code** (`portal/settings-05-restaurant-qr.png`)
 QR ozellestirici: solda akordeon paneller (Logo, Pattern, Eyes, Colors, Frame), sagda canli QR onizleme + indirme + kopyalama + hedef URL. Konfigurasyonu solda, sonucu sagda canli gosteren iki kolon kalibi.
 
-**Hot Actions** (`portal/hot-actions-01.png`)
-QRPOC personel isteklerinin birebir karsiligi. Create Hot Actions sekmesi: tablo Header / Image / Message + satir basina toggle, edit, delete. Hazir tanimlar: "Call someone", "Call for notes change", "Call to verify bill", "Call to clean table". Add New kilitli (ozel aksiyon ust planda). Hot Action Requests sekmesi gelen isteklerin logu.
+**Hot Actions** (`portal/hot-actions-01.png`, istek logu `hot-actions-02-requests.png`)
+QRPOC personel isteklerinin birebir karsiligi. Create Hot Actions sekmesi: tablo Header / Image / Message + satir basina toggle, edit, delete. Hazir tanimlar: "Call someone", "Call for notes change", "Call to verify bill", "Call to clean table". Add New kilitli (ozel aksiyon ust planda). Hot Action Requests sekmesi gelen isteklerin logu: Today/Week/Month segmenti + filtreler; tablo Icon / Header / **Table** / Status (sari "Active" dropdown) / Requested On / Approved On. Musterinin masadan gonderdigi istek buraya masa adiyla dusuyor; canli dogrulandi.
 
 **Marketing > Website** (`portal/marketing-01-website.png`)
 Website builder: solda bolum listesi, sagda bolum toggle'i + Configuration / Localize alt sekmeleri; alan etiketi solda-icerde kalibi (Button Link, Redirect to, Heading, Description).
@@ -171,7 +177,15 @@ Portal arayuz dili dropdown'u: English, Espanol, Francais, Deutsch, Italiano, Ne
 
 **Cart** (`customer/customer-09-cart.png`): "My cart" basligi + geri oku; item satiri (kucuk foto, ad, fiyat, sag ustte cop ikonu, adet steperi), "Add more items" butonu, **Add tip** bolumu (%5 / %10 / %15 / %20 preset butonlari + "or an amount?" serbest alan), Subtotal satiri, yapiskan alt bar: Total + siyah CHECKOUT.
 
-**Checkout** (`customer/customer-10-checkout.png`): CHECKOUT'a basinca musteri Login ekrani cikti (Email + Password + Remember me + Sign up). Sebep: store ayarlarinda "Enable guest checkout" kapali. Guest checkout acilirsa akis login'siz devam ediyor; bu hesapta acilmadigi icin odeme secimi ve order status ekranlari henuz goruntulenemedi (hesap acmak ve sifre girmek analiz sinirlari disinda).
+**Checkout, online modda** (`customer/customer-10-checkout.png`): restoran linkinden gelindiginde CHECKOUT musteri Login ekranina cikiyor (Email + Password + Sign up; Google secenegi yok). Sebep: "Enable guest checkout" kapali. Not: bu toggle'i portaldan acma denemesi de sessizce basarisiz oldu (Save tiklaninca API'ye istek gitmiyor; olasi client-side dogrulama hatasi veya plan kisiti).
+
+**Masa baglamı: dine-in akisi** (masa QR'i uzerinden, login'siz):
+- **Masa menusu** (`customer/customer-12-table-menu.png`): ayni menu ama alt nav Orders / **Hot actions** / Cart.
+- **Hot actions istek ekrani** (`customer/customer-13-hot-actions.png`, `customer-14-hot-action-selected.png`): "Requests" basligi, 4 istek karti (CALL SOMEONE, CALL FOR NOTES CHANGE, CALL TO VERIFY BILL, CALL TO CLEAN TABLE; illustrasyon + baslik + aciklama), secim yapilana kadar pasif REQUEST butonu. Istek portal loguna masa adiyla dusuyor.
+- **Payment** (`customer/customer-16-payment.png`, `customer-17-pay-with-cash.png`): login YOK; Payment options (Cash) + Order summary (Delivery method: DINEIN, Subtotal, Discounts, VAT, Total). Cash secilince "Complete your purchase and pay with cash on delivery." metni + "Pay with cash" butonu.
+- **Siparis sonrasi** (`customer/customer-18-order-placed.png`): sepet sifirlanir, alt navda Orders rozeti yanar.
+- **Active orders** (`customer/customer-19-order-status.png`): "You have 1 active order" + restoran basligi + siparis karti (invoice no, PENDING rozeti, tarih-saat, tutar).
+- **Siparis detayi ve durum stepper'i** (`customer/customer-20-order-detail.png`, `customer-21-order-inprogress.png`): uc adimli yatay stepper **PENDING - INPROGRESS - COMPLETED** (aktif adim dolu daire), Order items listesi, Order summary (DINEIN chip'i). Portalda durum degistirilince stepper aninda ilerliyor; canli dogrulandi.
 
 ---
 
@@ -269,12 +283,12 @@ Olculen degerler (getComputedStyle, 1440 px viewport) ve rol sistemi. Amac deger
 | W1-2 QR ve masa eslemesi | Stores > Tables (Add Floor, kat filtresi, Customize QR Code) + QR ozellestirici | `stores-01`, `settings-05` | Kat kavrami QRPOC kapsaminda yok; masa listesi + masa basina QR + print view yeter |
 | W1-3 Kitchen display | KDS istasyon secimi (cihaz basina) + upsell arkasi yapi; canli panosu kilitliydi | `kitchen-display-01` | Kanban kolonlu pano marketing gorsellerinden + brief kurallarindan turetilecek (yuksek kontrast, 2 m okunurluk) |
 | W1-4 Analytics dashboard | Dashboard (segment + tarih + store filtresi + stat kartlari + grafikler) + Accounting cipleri | `dashboard-01`, `accounting-01` | 3 mock lokasyon switcher'i = store filtresi dropdown kalibi |
-| W2-5 Scan landing | Musteri vitrin sayfasi (restoran kimligi) | `customer-01` | QRPOC masa bagalami onayini ekler; dil switcher'i burada gorunur olacak |
-| W2-6 Menu browse | Musteri menu: chip carousel + bolumlu 2 sutun grid + alt nav | `customer-02` | Alerjen/diyet rozetleri QRPOC'ta karta cikar (MenuTiger kartta gostermiyor) |
-| W2-7 Item detail | Item detayi: foto + meta + fiyat varyantlari + Ozel Talimatlar + yapiskan toplam bari | `customer-06`, `customer-07` | Malzeme cikar/ekle seviyesi icin modifier group + serbest not birlesimi |
-| W2-8 Cart ve onay | My cart: item satiri + Add more items + Add tip presetleri + yapiskan Total/CHECKOUT | `customer-09` | "Kasada veya garsona ode" = Cash entegrasyonu acik senaryosu; QRPOC'ta login duvari yok |
-| W2-9 Order status | Musteri Orders sekmesi goruntulenemedi; portal Food orders status kolonlari | `orders-01` | Pending/Preparing/Ready durum dili marketing + portaldan dogrulandi |
-| W2-10 Personel istekleri | Hot Actions: tanim tablosu (Header/Image/Message + toggle) + Requests logu | `hot-actions-01` | Birebir temel; QRPOC musteri tarafinda gorunur onay state'i ekler |
+| W2-5 Scan landing | Masa QR'i kisa URL'e gider (menutigr.com/<uid>), dogrudan masa baglamli menu acilir; vitrin sayfasi ayri | `customer-01`, `customer-12` | QRPOC masa bagalami onayini ekler; dil switcher'i burada gorunur olacak |
+| W2-6 Menu browse | Musteri menu: chip carousel + bolumlu 2 sutun grid + alt nav (dine-in modda Orders / Hot actions / Cart) | `customer-02`, `customer-12` | Alerjen/diyet rozetleri QRPOC'ta karta cikar (MenuTiger kartta gostermiyor) |
+| W2-7 Item detail | Item detayi: foto + meta + fiyat varyantlari + Ozel Talimatlar + yapiskan toplam bari | `customer-06..08` | Malzeme cikar/ekle seviyesi icin modifier group + serbest not birlesimi |
+| W2-8 Cart ve onay | My cart + Payment ekrani: Cash + DINEIN ozetli siparis onayi, login'siz | `customer-09`, `customer-16..18` | "Kasada veya garsona ode" = Cash odeme secenegi; dine-in modda login duvari yok, birebir dogrulandi |
+| W2-9 Order status | Active orders listesi + uc adimli stepper (PENDING / INPROGRESS / COMPLETED); portal dropdown'u ile canli senkron | `customer-19..21`, `orders-02..04` | QRPOC durum dili: Alindi / Hazirlaniyor / Hazir; stepper kalibi aynen |
+| W2-10 Personel istekleri | Musteri Requests ekrani (4 kart + REQUEST) + portal Hot Action Requests logu (masa adiyla) | `customer-13..15`, `hot-actions-01..02` | Birebir temel; QRPOC musteri tarafinda gorunur onay state'i ekler |
 | W3-11 Musteri profili / hafiza | Dogrudan karsilik yok | | Uyarlama: toggle satir kutulari (ayarlar), chip coklu secim (alerjiler; Languages chip kalibi), item rozetleri (uyari) |
 | W3-12 Pre-arrival | Dogrudan karsilik yok | | Uyarlama: store secimi (master-detail listesi), Opening Hours satir kalibi (saat secimi), menu browse akisi |
 | W3-13 Self-service | Dogrudan karsilik yok | | Uyarlama: order status + gise numarasi icin stat-kart tipografisi (dashboard buyuk sayi stili) + KDS kontrast kurallari |
@@ -288,6 +302,6 @@ Genel kural: MenuTiger'dan alinan sey iskelet ve kaliplar (baslik bandi, sekme s
 1. **Iki dilli menu girisi:** KARAR: TR ve EN alanlari ayni formda yan yana. Localize sekmesi kalibi alinmayacak.
 2. **Gating kaliplari:** Yaren kararsiz kaldi; en basit tutarli yorum uygulanacak: prototype'ta plan/kilit/upsell kaliplari tamamen kapsam disi. Ileride istenirse ayri karar olur.
 3. **KDS gorsel kaynagi:** ONAYLANDI: pano tasarimi marketing gorselleri + brief kurallarindan turetilecek; deneme baslatilmayacak.
-4. **Cart/checkout/status:** Test siparisi denendi: cart ve tip ekranlari belgelendi (`customer-09`), checkout musteri login duvarina takildi cunku "Enable guest checkout" kapali (`customer-10`). Kalan adim: Yaren toggle'i acarsa guest checkout + odeme secimi + order status ekranlari da belgelenecek.
+4. **Cart/checkout/status:** COZULDU: masa QR'i uzerinden dine-in akisi login'siz calisti; payment, siparis onayi, order status stepper'i, portal siparis yonetimi ve hot action dongusu ucundan ucuna belgelendi (`customer-12..21`, `orders-02..04`, `hot-actions-02`). Online moddaki login duvari ve calismayan guest checkout toggle'i ayrica not edildi.
 5. **Dashboard stat kartlari:** ERTELENDI: marka yonu belirlenince karar verilecek.
 6. **h2d dosyalari:** Import adimlari yazildi: `references/h2d-figma-import.md`. Import, html.to.design eklentisinin Figma icinde elle calistirilmasini gerektiriyor; MCP uzerinden otomatiklestirilemiyor.
