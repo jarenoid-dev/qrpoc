@@ -1,3 +1,5 @@
+GEÇERSİZ: Bu brief (v4.2) yanlış proje varsayımları içeriyor. Hiçbir bölümü uygulanmaz. Yeni talimat Yaren'den gelecek.
+
 # QRPOC · Claude Code Brief (v4.2)
 
 **Kullanım:** Bu dosya `qrpoc` klasörünün kökünde `BRIEF.md` olarak durur. Claude Code'a "BRIEF.md'yi oku ve uygula" demek yeterlidir.
