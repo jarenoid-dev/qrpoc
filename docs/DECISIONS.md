@@ -4,7 +4,7 @@
 - 2026-08-14: "Menu Tiger Screens" klasorunde png/jpg/webp yok; 8 dosyanin tumu .h2d uzantili (html.to.design Figma eklentisinin sifreli yakalama formati, dogrudan goruntulenemiyor). Vision incelemesi yerine canli portal gezisi birincil gorsel kaynak olarak kullanildi. Dosya adlari yakalanan ekranlari belgeliyor: /portal, /portal/menus x3, iki ayri menunun menu-editor'u x3, ayrica bir Behance UI referansi (Cortex AI Chatbot SaaS).
 - 2026-08-14: Figma QRPOC dosyasi (PD58ocGJ0ogUJ0DSk3rxwn) bos: tek sayfa "Startup Pitch", icerik yok. Gorsel stil otoritesi olarak kullanilamadi.
 - 2026-08-14: Marketing site analizi v2 brief doneminde derin yapilmisti; v4.2 geregi dokumanda yalnizca kisa bir alt baslik olarak yer aliyor.
-- 2026-08-14: "Menu Tiger Screens" klasoru commit'lere dahil edilmedi (buyuk binary referans dosyalari, brief commit'leri dar kapsamli). Yaren isterse ayri karar ile eklenir.
+- 2026-08-14: "Menu Tiger Screens" klasoru once commit disi birakilmisti; ayni gun Yaren "herseyi GitHub'a" deyince repoya dahil edildi (15 MB, 8 .h2d dosyasi). Repo GitHub'a private olarak cikarildi (jarenoid-dev/qrpoc).
 - 2026-08-14: Portal gezisi Playwright (headed Chromium) ile yapildi; login Yaren tarafindan girildi. Salt okuma korundu: hicbir Save/submit basilmadi, deneme (trial) baslatilmadi, siparis verilmedi, toggle degistirilmedi.
 - 2026-08-14: Musteri yuzeyi ekran goruntuleri icin `references/customer/` klasoru acildi; brief'in tanimladigi `references/portal/` portala ayrildi.
 - 2026-08-14: Hesap Freemium oldugu icin Table Management (Premium) ve Kitchen Display (Advanced) canli incelenemedi; kilit arkasinda gorunen kadar + upsell kaliplari belgelendi. Musteri cart/checkout/status ekranlari siparis vermeden gorulemedigi icin kapsam disi kaldi.
