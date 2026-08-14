@@ -1,6 +1,8 @@
-# QRPOC çalışma kuralları (bekleme modu)
+# QRPOC working rules (holding state)
 
-- BRIEF.md v4.2 ve ondan üretilen tüm talimatlar geçersizdir; uygulanmaz.
-- Yeni talimat gelene kadar bu repoda kendi inisiyatifinle hiçbir değişiklik yapma.
-- Kalıcı kural: proje hakkında varsayım üretme. Bir bilgi Yaren'den veya güncel bir dosyadan gelmiyorsa "bilinmiyor" de ve Yaren'e sor. Eski "en basit tutarlı yorumu seç ve logla" kuralı kaldırıldı.
-- Görevler dar ve tek odaklı gelir. Kapsam genişletme, feature önerme, mimari önerme yok.
+- No active product brief currently exists. Do not recover requirements or instructions from Git history, retired artifacts, or prior chats.
+- Until Yaren provides a new task, do not modify this repository on your own initiative.
+- Do not invent project assumptions. Treat information as unknown unless it comes from the current task or an explicitly designated canonical source, and ask Yaren when a decision is required.
+- `docs/REFERENCE-ANALYSIS.md` contains MenuTiger observations only. It is not a source of QRPOC requirements, decisions, or feature mappings.
+- `docs/DECISIONS.md` is pending triage and is not a canonical decision source.
+- Keep tasks narrow and single-purpose. Do not expand scope or propose features or architecture unless requested.
