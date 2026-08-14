@@ -167,9 +167,11 @@ Portal arayuz dili dropdown'u: English, Espanol, Francais, Deutsch, Italiano, Ne
 
 **Turkce secili menu** (`customer/customer-05-turkish.png`): chrome Turkcelesti (Ana Sayfa / Siparisler / Sepet) ama item adlari ve aciklamalari Ingilizce kaldi; ceviri girilmemis icerik varsayilan dile dusuyor, otomatik ceviri yok.
 
-**Item detayi** (`customer/customer-06-item-detail.png`, `customer-07-item-notes.png`): tam genislik foto, aciklama kutusu, meta satirlari (Hazirlik Suresi: 10 dakika, Boyut: 150 grams, Siparis Turu), Fiyat Varyantlari listesi (Small/Medium/Large + fiyat + checkbox), **Ozel Talimatlar** serbest metin alani, yapiskan alt bar: Toplam, SEPETE EKLE, adet steperi.
+**Item detayi** (`customer/customer-06-item-detail.png`, `customer-07-item-notes.png`, `customer-08-item-note-filled.png`): tam genislik foto, aciklama kutusu, meta satirlari (Hazirlik Suresi: 10 dakika, Boyut: 150 grams, Siparis Turu), Fiyat Varyantlari listesi (Small/Medium/Large + fiyat + checkbox), **Ozel Talimatlar** serbest metin alani, yapiskan alt bar: Toplam, SEPETE EKLE, adet steperi. Not alaninin placeholder'i alerji odakli: "Please let us know if you are allergic to anything or if we need to avoid some ingredients". Detay ekrani ayni kategorideki item'lar arasinda yatay kaydirilabilen bir carousel; her slaytin kendi varyant + not alani var.
 
-Goruntulenemeyen musteri ekranlari: cart ici, checkout, order status (siparis vermek gerekiyordu; salt okuma sinirina takildi).
+**Cart** (`customer/customer-09-cart.png`): "My cart" basligi + geri oku; item satiri (kucuk foto, ad, fiyat, sag ustte cop ikonu, adet steperi), "Add more items" butonu, **Add tip** bolumu (%5 / %10 / %15 / %20 preset butonlari + "or an amount?" serbest alan), Subtotal satiri, yapiskan alt bar: Total + siyah CHECKOUT.
+
+**Checkout** (`customer/customer-10-checkout.png`): CHECKOUT'a basinca musteri Login ekrani cikti (Email + Password + Remember me + Sign up). Sebep: store ayarlarinda "Enable guest checkout" kapali. Guest checkout acilirsa akis login'siz devam ediyor; bu hesapta acilmadigi icin odeme secimi ve order status ekranlari henuz goruntulenemedi (hesap acmak ve sifre girmek analiz sinirlari disinda).
 
 ---
 
@@ -224,7 +226,7 @@ MenuTiger dili uc bagimsiz katmanda cozmus; QRPOC'un TR/EN modeli icin dogrudan 
 
 QRPOC'a uyarlama notlari:
 - Iki dilli (TR/EN) sabit bir urunde 1. ve 2. katman birlesebilir; ama "icerik dili" ile "arayuz dili" ayriminin kendisi korunmali (musteri Ingilizce chrome + Turkce icerik gorebilmeli ve tersi).
-- Brief, menu editorunde iki dilli girisin "yorucu olmayan bir patternle" cozulmesini istiyor. MenuTiger'in ayri-sekme yaklasimi temiz ama iki alan icin agir kalabilir; TR ve EN alanlarini ayni formda yan yana koymak da mesru. Karar Acik Sorular'da.
+- **Karar (2026-08-14, Yaren):** menu editorunde TR ve EN alanlari ayni formda yan yana girilir; MenuTiger'in ayri Localize sekmesi kalibi alinmaz. Fallback kurali yine gecerli: bos birakilan dil, dolu dile duser.
 - Fallback kurali aynen alinmali: cevirisi olmayan icerik varsayilan dilde gosterilir, bos gosterilmez.
 - Musteri switcher'i MenuTiger'da cekmecede gomulu; QRPOC brief'i "sessiz ama erisilir" diyor ve scan landing + header'da istiyor. Cekmece-only yerlesimi kopyalanmayacak.
 
@@ -270,7 +272,7 @@ Olculen degerler (getComputedStyle, 1440 px viewport) ve rol sistemi. Amac deger
 | W2-5 Scan landing | Musteri vitrin sayfasi (restoran kimligi) | `customer-01` | QRPOC masa bagalami onayini ekler; dil switcher'i burada gorunur olacak |
 | W2-6 Menu browse | Musteri menu: chip carousel + bolumlu 2 sutun grid + alt nav | `customer-02` | Alerjen/diyet rozetleri QRPOC'ta karta cikar (MenuTiger kartta gostermiyor) |
 | W2-7 Item detail | Item detayi: foto + meta + fiyat varyantlari + Ozel Talimatlar + yapiskan toplam bari | `customer-06`, `customer-07` | Malzeme cikar/ekle seviyesi icin modifier group + serbest not birlesimi |
-| W2-8 Cart ve onay | Alt nav Cart + yapiskan bar kalibi; cart ici goruntulenemedi | (yok) | Kendi kurgumuz; "kasada veya garsona ode" = Cash entegrasyonu acik senaryosu |
+| W2-8 Cart ve onay | My cart: item satiri + Add more items + Add tip presetleri + yapiskan Total/CHECKOUT | `customer-09` | "Kasada veya garsona ode" = Cash entegrasyonu acik senaryosu; QRPOC'ta login duvari yok |
 | W2-9 Order status | Musteri Orders sekmesi goruntulenemedi; portal Food orders status kolonlari | `orders-01` | Pending/Preparing/Ready durum dili marketing + portaldan dogrulandi |
 | W2-10 Personel istekleri | Hot Actions: tanim tablosu (Header/Image/Message + toggle) + Requests logu | `hot-actions-01` | Birebir temel; QRPOC musteri tarafinda gorunur onay state'i ekler |
 | W3-11 Musteri profili / hafiza | Dogrudan karsilik yok | | Uyarlama: toggle satir kutulari (ayarlar), chip coklu secim (alerjiler; Languages chip kalibi), item rozetleri (uyari) |
@@ -281,11 +283,11 @@ Genel kural: MenuTiger'dan alinan sey iskelet ve kaliplar (baslik bandi, sekme s
 
 ---
 
-## 8. Acik sorular
+## 8. Acik sorular ve cozumleri (2026-08-14 guncellemesi)
 
-1. **Iki dilli menu girisi:** MenuTiger tarzi ayri Localize sekmesi mi, yoksa TR ve EN alanlari ayni formda yan yana mi? (Brief "yorucu olmayan pattern" diyor; iki dillik sabit oldugu icin yan yana daha hizli olabilir.)
-2. **Gating kaliplari:** QRPOC prototype'inda plan/kilit yok varsayiyorum; upsell modali, kilitli sekme gibi kaliplar tamamen kapsam disi mi kalsin?
-3. **KDS gorsel kaynagi:** canli KDS kilitli oldugu icin pano tasarimi marketing gorselleri + brief kurallarindan turetilecek; bu kabul mu, yoksa deneme suresi baslatilip canli KDS mi incelensin? (Deneme baslatmak hesap durumunu degistirir; bilerek yapilmadi.)
-4. **Cart/checkout/status ekranlari:** musteri tarafinda siparis verilmeden goruntulenemedi. Wave 2 oncesi test siparisiyle (onayinla) incelensin mi, yoksa kendi kurgumuzla mi gidelim?
-5. **Dashboard stat kartlari:** lacivert/gradient agir kart stili alinsin mi, yoksa tum kartlar notr beyaz mi kalsin? (Marka yonu belli olunca netlesir.)
-6. **h2d dosyalari:** html.to.design eklentisiyle Figma'ya import edilirse orijinal yakalamalardan piksel olcumleri alinabilir; istenirse manuel import adimlarini yazarim.
+1. **Iki dilli menu girisi:** KARAR: TR ve EN alanlari ayni formda yan yana. Localize sekmesi kalibi alinmayacak.
+2. **Gating kaliplari:** Yaren kararsiz kaldi; en basit tutarli yorum uygulanacak: prototype'ta plan/kilit/upsell kaliplari tamamen kapsam disi. Ileride istenirse ayri karar olur.
+3. **KDS gorsel kaynagi:** ONAYLANDI: pano tasarimi marketing gorselleri + brief kurallarindan turetilecek; deneme baslatilmayacak.
+4. **Cart/checkout/status:** Test siparisi denendi: cart ve tip ekranlari belgelendi (`customer-09`), checkout musteri login duvarina takildi cunku "Enable guest checkout" kapali (`customer-10`). Kalan adim: Yaren toggle'i acarsa guest checkout + odeme secimi + order status ekranlari da belgelenecek.
+5. **Dashboard stat kartlari:** ERTELENDI: marka yonu belirlenince karar verilecek.
+6. **h2d dosyalari:** Import adimlari yazildi: `references/h2d-figma-import.md`. Import, html.to.design eklentisinin Figma icinde elle calistirilmasini gerektiriyor; MCP uzerinden otomatiklestirilemiyor.
