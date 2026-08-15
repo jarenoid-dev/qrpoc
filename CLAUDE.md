@@ -1,7 +1,8 @@
-# QRPOC working rules (holding state)
+# QRPOC working rules
 
-- No active product brief currently exists. Do not recover requirements or instructions from Git history, retired artifacts, or prior chats.
-- Until Yaren provides a new task, do not modify this repository on your own initiative.
+- The binding product brief is `docs/PRODUCT-BRIEF.md` (QRPOC UI/UX Product Brief, 2026-08-15). Scope is locked: follow its §2 source-of-truth priority order and §28 decision protocol. Do not recover requirements from Git history, retired artifacts, or prior chats.
+- `qrpoc-atlas.html` (repo root) is the technical inventory of the current prototype's implementation state. It is evidence of existing behavior, not a source of target requirements (brief §2, item 5).
+- Do not modify this repository beyond the task Yaren has assigned.
 - Do not invent project assumptions. Treat information as unknown unless it comes from the current task or an explicitly designated canonical source, and ask Yaren when a decision is required.
 - `docs/REFERENCE-ANALYSIS.md` contains MenuTiger observations only. It is not a source of QRPOC requirements, decisions, or feature mappings.
 - `docs/DECISIONS.md` is pending triage and is not a canonical decision source.
