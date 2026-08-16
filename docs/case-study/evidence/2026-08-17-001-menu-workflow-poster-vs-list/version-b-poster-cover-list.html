@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Version B — Poster kapak + liste menü</title>
+<style>
+:root{
+  --surface-0:#efece7;--surface-1:#faf9f7;--surface-2:#ffffff;
+  --border:#e6e4e0;--border-strong:#cfccc6;--border-accent:#c3cdfa;
+  --bg-accent:#eef2ff;--text-accent:#3a54d6;
+  --text-primary:#1a1a1a;--text-secondary:#5a5a5a;--text-muted:#8f8f8f;
+  --fill-primary:#1f2430;--on-primary:#ffffff;--radius:8px;
+  --font-voice:Georgia,'Times New Roman',serif;
+  --poster-bg:#211d1a;--poster-fg:#efe7d6;--poster-mut:#b8ab92;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:#e9e7e3;color:var(--text-primary);display:flex;justify-content:center;padding:20px;}
+button,input{font-family:inherit;}
+.wrap{max-width:360px;width:100%;}
+.caption{font-size:12px;color:#6a6a6a;text-align:center;margin:0 0 12px;}
+.phone{background:var(--surface-2);border:0.5px solid var(--border);border-radius:18px;padding:8px;}
+.notch{height:5px;width:38px;background:var(--surface-1);border-radius:3px;margin:2px auto 8px;}
+.screen{background:var(--surface-1);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:0.5px solid var(--border);background:var(--surface-2);}
+.cart{font-size:12px;font-weight:500;background:var(--bg-accent);color:var(--text-accent);padding:3px 10px;border-radius:var(--radius);}
+.cover{background:var(--poster-bg);color:var(--poster-fg);padding:16px;text-align:center;position:relative;}
+.ctag{position:absolute;top:8px;right:8px;font-size:9px;color:var(--poster-mut);border:0.5px solid rgba(239,231,214,0.35);border-radius:4px;padding:2px 6px;}
+.ctitle{font-size:11px;letter-spacing:2px;color:var(--poster-mut);}
+.cscript{font-family:var(--font-voice);font-style:italic;font-size:24px;line-height:1.1;margin:2px 0 0;}
+.qwrap{padding:12px 12px 0;}
+.q{width:100%;padding:9px 11px;border:0.5px solid var(--border-strong);border-radius:var(--radius);font-size:13px;}
+.chips{display:flex;gap:6px;padding:10px 12px;flex-wrap:wrap;}
+.chip{font-size:12px;padding:5px 11px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);border-radius:999px;cursor:pointer;white-space:nowrap;}
+.chip.on{background:var(--bg-accent);color:var(--text-accent);border-color:var(--border-accent);font-weight:500;}
+.list{padding:0 12px 12px;}
+.frow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border);}
+.fname{display:block;font-size:13px;font-weight:500;}
+.fprice{display:block;font-size:12px;color:var(--text-secondary);}
+.add{width:28px;height:28px;border-radius:50%;background:var(--fill-primary);color:var(--on-primary);border:none;font-size:17px;line-height:1;cursor:pointer;flex-shrink:0;}
+.empty{display:none;text-align:center;font-size:12px;color:var(--text-muted);padding:16px 0;}
+@media (prefers-color-scheme:dark){
+  :root{--surface-0:#1c1a18;--surface-1:#222018;--surface-2:#26241f;--border:#39352e;--border-strong:#4a453c;--bg-accent:#20263f;--text-accent:#9db0ff;--border-accent:#33406b;--text-primary:#efe9df;--text-secondary:#b7b0a4;--text-muted:#8a8579;--fill-primary:#efe9df;--on-primary:#1a1a1a;}
+  body{background:#141310;color:var(--text-primary);}
+  .caption{color:#9a948a;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="caption">Version B — poster = marka kapağı, altında asıl menü liste olarak (tek menü).</p>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="topbar"><span style="font-size:12px;color:var(--text-secondary);">Masa 1</span><span class="cart" id="cart">Sepet 0</span></div>
+      <div class="cover">
+        <span class="ctag">kapak · işletmecinin markası</span>
+        <div class="ctitle">Adanadayım Pub</div>
+        <div class="cscript">Menü</div>
+      </div>
+      <div class="qwrap"><input class="q" id="q" type="text" placeholder="Menüde ara" oninput="applyFilter()" aria-label="Menüde ara"></div>
+      <div class="chips">
+        <button class="chip on" onclick="setCat('all',this)">Tümü</button>
+        <button class="chip" onclick="setCat('baslangic',this)">Başlangıç</button>
+        <button class="chip" onclick="setCat('ana',this)">Ana</button>
+        <button class="chip" onclick="setCat('icecek',this)">İçecek</button>
+        <button class="chip" onclick="setCat('tatli',this)">Tatlı</button>
+      </div>
+      <div class="list" id="list"></div>
+      <div class="empty" id="empty">Sonuç yok</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var items=[
+    {n:'Çiğ köfte',p:60,c:'baslangic'},{n:'İçli köfte',p:80,c:'baslangic'},{n:'Humus',p:55,c:'baslangic'},{n:'Haydari',p:45,c:'baslangic'},
+    {n:'Adana kebap',p:120,c:'ana'},{n:'Urfa kebap',p:120,c:'ana'},{n:'Tavuk şiş',p:100,c:'ana'},{n:'Karışık ızgara',p:180,c:'ana'},{n:'Lahmacun',p:40,c:'ana'},{n:'Pide',p:90,c:'ana'},
+    {n:'Ayran',p:30,c:'icecek'},{n:'Şalgam',p:25,c:'icecek'},{n:'Şıra',p:35,c:'icecek'},{n:'Kola',p:40,c:'icecek'},
+    {n:'Künefe',p:90,c:'tatli'},{n:'Baklava',p:85,c:'tatli'}
+  ];
+  var cart=0, cat='all';
+  function g(id){return document.getElementById(id);}
+  function renderCart(){g('cart').textContent='Sepet '+cart;}
+  function build(){
+    var h='';
+    for(var i=0;i<items.length;i++){
+      h+='<div class="frow" data-n="'+items[i].n.toLowerCase()+'" data-c="'+items[i].c+'">'
+        +'<span style="flex:1;"><span class="fname">'+items[i].n+'</span><span class="fprice">₺'+items[i].p+'</span></span>'
+        +'<button class="add" onclick="addItem()" aria-label="'+items[i].n+' ekle">+</button></div>';
+    }
+    g('list').innerHTML=h;
+  }
+  function addItem(){cart++;renderCart();}
+  function applyFilter(){
+    var q=(g('q').value||'').toLowerCase().trim(), any=false;
+    var rows=document.querySelectorAll('.frow');
+    for(var i=0;i<rows.length;i++){
+      var okc=cat==='all'||rows[i].getAttribute('data-c')===cat;
+      var okq=rows[i].getAttribute('data-n').indexOf(q)>=0;
+      var show=okc&&okq; rows[i].style.display=show?'flex':'none'; if(show)any=true;
+    }
+    g('empty').style.display=any?'none':'block';
+  }
+  function setCat(c,el){cat=c;var cs=document.querySelectorAll('.chip');for(var i=0;i<cs.length;i++)cs[i].className='chip';el.className='chip on';applyFilter();}
+  window.addItem=addItem;window.applyFilter=applyFilter;window.setCat=setCat;
+  build();renderCart();
+})();
+</script>
+</body>
+</html>
