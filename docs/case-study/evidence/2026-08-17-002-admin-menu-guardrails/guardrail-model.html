@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QRPOC — Admin menü kurma: guardrail modeli</title>
+<style>
+:root{
+  --surface-0:#eceae6;--surface-1:#faf9f7;--surface-2:#ffffff;
+  --border:#e6e4e0;--border-strong:#cfccc6;
+  --text-primary:#1a1a1a;--text-secondary:#5a5a5a;--text-muted:#8f8f8f;
+  --accent:#3a54d6;--accent-bg:#eef2ff;--accent-border:#c3cdfa;
+  --bad:#b3261e;--bad-bg:#fdecea;--bad-border:#f2c4c0;
+  --ok:#1f6f43;--ok-bg:#e9f5ee;--ok-border:#bfe0cd;
+  --warn:#8a5a00;--warn-bg:#fdf3e0;--warn-border:#efdcb4;
+  --radius:8px;
+}
+*{box-sizing:border-box;}
+body{margin:0;padding:24px 16px 64px;background:var(--surface-0);color:var(--text-primary);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:14px;line-height:1.5;}
+.page{max-width:1080px;margin:0 auto;}
+h1{font-size:20px;margin:0 0 4px;font-weight:600;}
+.sub{color:var(--text-secondary);margin:0 0 4px;font-size:13px;}
+.disclaimer{font-size:12px;color:var(--text-muted);margin:0 0 20px;}
+button{font-family:inherit;font-size:inherit;cursor:pointer;}
+
+/* tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:1px solid var(--border-strong);padding-bottom:12px;}
+.tab{padding:7px 14px;border:1px solid var(--border-strong);background:var(--surface-2);
+  color:var(--text-secondary);border-radius:999px;}
+.tab[aria-selected="true"]{background:var(--text-primary);color:#fff;border-color:var(--text-primary);font-weight:500;}
+.panel[hidden]{display:none;}
+
+.card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+h2{font-size:15px;margin:0 0 6px;font-weight:600;}
+h3{font-size:13px;margin:0 0 8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);}
+p{margin:0 0 10px;}
+.thesis{font-size:15px;line-height:1.5;border-left:3px solid var(--accent);padding-left:12px;margin:0 0 14px;}
+
+/* control bar */
+.controls{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;margin-bottom:16px;}
+.ctl-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);display:block;margin-bottom:6px;}
+.seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden;}
+.seg button{padding:8px 14px;border:0;background:var(--surface-2);color:var(--text-secondary);border-right:1px solid var(--border);}
+.seg button:last-child{border-right:0;}
+.seg button[aria-pressed="true"]{background:var(--text-primary);color:#fff;font-weight:500;}
+.seg.danger button[aria-pressed="true"]{background:var(--bad);}
+
+/* phones */
+.phones{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+.phone-wrap{min-width:0;}
+.phone-cap{font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:6px;}
+.phone{background:var(--surface-2);border:1px solid var(--border-strong);border-radius:16px;padding:7px;}
+.notch{height:4px;width:34px;background:var(--surface-0);border-radius:3px;margin:1px auto 7px;}
+.screen{border-radius:11px;overflow:hidden;display:flex;flex-direction:column;height:436px;
+  background:var(--m-surface);color:var(--m-text);font-family:var(--m-body);}
+.m-top{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;
+  border-bottom:1px solid var(--m-rule);font-size:10px;color:var(--m-muted);flex:0 0 auto;}
+.m-badge{background:var(--m-brand);color:var(--m-onbrand);border-radius:999px;padding:2px 8px;font-weight:600;}
+.m-cover{background:var(--m-cover);color:var(--m-coverfg);padding:var(--m-coverpad);text-align:center;flex:0 0 auto;}
+.m-logo{width:34px;height:34px;margin:0 auto 7px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--m-head);font-size:17px;font-weight:600;border:1px solid currentColor;}
+.m-logo.round{border-radius:50%;}
+.m-logo.soft{border-radius:8px;}
+.m-logo.fill{background:currentColor;border:0;}
+.m-logo.fill span{color:var(--m-cover);}
+.m-name{font-family:var(--m-head);font-size:var(--m-namesize);line-height:1.15;margin:0;font-weight:600;
+  letter-spacing:var(--m-nametrack);text-transform:var(--m-namecase);}
+.m-tag{font-size:10px;opacity:.75;margin-top:4px;font-family:var(--m-body);}
+.m-nav{display:flex;gap:5px;padding:9px 10px 7px;overflow-x:auto;flex:0 0 auto;}
+.m-chip{font-size:10px;padding:4px 9px;border:1px solid var(--m-rule);border-radius:999px;
+  color:var(--m-muted);white-space:nowrap;background:transparent;}
+.m-chip.on{background:var(--m-brand);color:var(--m-onbrand);border-color:var(--m-brand);font-weight:600;}
+.m-list{padding:0 10px 10px;overflow-y:auto;flex:1 1 auto;}
+.m-sec{font-family:var(--m-head);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--m-muted);margin:10px 0 6px;}
+.m-row{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--m-rule);}
+.m-thumb{width:38px;height:38px;border-radius:5px;flex:0 0 auto;background:var(--m-thumb);
+  display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--m-muted);}
+.m-thumb.miss{background:transparent;border:1px dashed var(--m-rule);}
+.m-body{flex:1 1 auto;min-width:0;}
+.m-iname{font-family:var(--m-head);font-size:var(--m-itemsize);font-weight:600;display:block;
+  text-transform:var(--m-itemcase);letter-spacing:var(--m-itemtrack);}
+.m-idesc{font-size:10px;color:var(--m-muted);display:block;margin-top:1px;}
+.m-meta{font-size:9px;color:var(--m-muted);display:block;margin-top:2px;}
+.m-price{font-size:var(--m-itemsize);font-weight:600;flex:0 0 auto;color:var(--m-price);}
+.m-add{width:24px;height:24px;border-radius:50%;background:var(--m-brand);color:var(--m-onbrand);
+  border:0;font-size:14px;line-height:1;flex:0 0 auto;}
+
+/* flags */
+.flags{margin-top:8px;display:flex;flex-direction:column;gap:4px;}
+.flag{font-size:11px;line-height:1.35;padding:5px 8px;border-radius:6px;border:1px solid;}
+.flag.bad{background:var(--bad-bg);border-color:var(--bad-border);color:var(--bad);}
+.flag.ok{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok);}
+.inputs{margin-top:8px;font-size:11px;color:var(--text-secondary);line-height:1.5;}
+.inputs b{color:var(--text-primary);font-weight:600;}
+
+/* tiers */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.tier{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-2);overflow:hidden;}
+.tier-head{padding:12px 14px;border-bottom:1px solid var(--border);}
+.tier-head .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;}
+.tier-head .d{font-size:12px;color:var(--text-secondary);margin-top:3px;}
+.tier.locked .k{color:var(--bad);} .tier.locked{border-top:3px solid var(--bad);}
+.tier.choose .k{color:var(--warn);} .tier.choose{border-top:3px solid var(--warn);}
+.tier.custom .k{color:var(--ok);} .tier.custom{border-top:3px solid var(--ok);}
+.tier ul{list-style:none;margin:0;padding:10px 14px 14px;}
+.tier li{padding:6px 0;border-bottom:1px solid var(--surface-0);font-size:13px;}
+.tier li:last-child{border-bottom:0;}
+.opts{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.opt{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--surface-0);color:var(--text-secondary);}
+.new{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--accent-bg);color:var(--accent);
+  border:1px solid var(--accent-border);margin-left:5px;vertical-align:1px;}
+.q{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--warn-bg);color:var(--warn);
+  border:1px solid var(--warn-border);margin-left:5px;vertical-align:1px;}
+
+/* lanes */
+.lane{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-2);
+  padding:14px;margin-bottom:14px;}
+.lane-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.lane-head b{font-size:14px;}
+.lane-head span{font-size:12px;color:var(--text-secondary);}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
+.step{border:1px solid var(--border);border-radius:6px;padding:9px 10px;background:var(--surface-1);}
+.step .n{font-size:10px;color:var(--text-muted);}
+.step .t{font-size:12px;font-weight:600;display:block;margin:2px 0 4px;}
+.step .h{font-size:10px;color:var(--text-secondary);line-height:1.4;}
+.home{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;
+  background:var(--surface-0);color:var(--text-secondary);margin-top:5px;}
+.rule{border-left:3px solid var(--text-primary);padding-left:12px;font-size:14px;margin:16px 0 0;}
+.mobile{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--accent-bg);
+  color:var(--accent);border:1px solid var(--accent-border);}
+.note{font-size:12px;color:var(--text-secondary);margin-top:10px;}
+.note code{background:var(--surface-0);padding:1px 4px;border-radius:3px;font-size:11px;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1>Admin menü kurma — guardrail modeli</h1>
+<p class="sub">QRPOC · adım 002 kanıtı · 17 Ağustos 2026</p>
+<p class="disclaimer">Kavram prototipi. Yer tutucu veri, marka-nötr, gerçek ürün ekranı değil.
+Amaç: yapıyı ve sınır mantığını tartışılabilir hâle getirmek.</p>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true" onclick="showTab(0,this)">1 · Marka testi</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="showTab(1,this)">2 · Üç kademe</button>
+  <button class="tab" role="tab" aria-selected="false" onclick="showTab(2,this)">3 · Kurulum ↔ bakım</button>
+</div>
+
+<!-- ================= TAB 1 ================= -->
+<section class="panel" id="p0">
+  <div class="card">
+    <p class="thesis">Özgürlük <b>kimliğe</b> harcanır, <b>yerleşime</b> değil.<br>
+    Restoran kendi logosunu, fotoğrafını, rengini ve kelimelerini verir; hizalama, boşluk,
+    tipografi ölçeği ve kontrast sistemde kilitlidir.</p>
+    <p>Aşağıdaki üç menü <b>aynı kilitli yerleşimi</b> kullanıyor. Aralarındaki fark yalnızca
+    işletmenin verdiği kimlik girdilerinden geliyor. Sağdaki düğmeyle bugünkü editörün
+    izin verdiği serbestliğe geçebilirsiniz.</p>
+
+    <div class="controls">
+      <div>
+        <span class="ctl-label">Sistem</span>
+        <div class="seg" id="modeSeg">
+          <button aria-pressed="true" onclick="setMode('on',this)">Kurallı (öneri)</button>
+          <button aria-pressed="false" onclick="setMode('off',this)">Bugünkü editör (serbest)</button>
+        </div>
+      </div>
+      <div>
+        <span class="ctl-label">Fotoğraf kapsamı</span>
+        <div class="seg" id="photoSeg">
+          <button aria-pressed="true" onclick="setPhoto('full',this)">Tam</button>
+          <button aria-pressed="false" onclick="setPhoto('half',this)">Yarım (6 üründen 2'si)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="phones" id="phones"></div>
+  </div>
+
+  <div class="card">
+    <h3>Bugünkü editörün gerçekten izin verdiği şey</h3>
+    <p class="note">Koddan doğrulandı — <code>menu-editor/customiser.tsx</code> ve <code>types.ts</code>:
+    3 adet serbest hex renk alanı (primary / secondary / accent), 10 fontluk listeden
+    <b>ayrı ayrı</b> seçilen başlık ve gövde fontu (100 olası eşleşme, çoğu kötü; gövde metni
+    Bebas Neue olabiliyor), serbest hero görseli + serbest başlık/alt başlık, 5 açma-kapama
+    (görsel, açıklama, kalori, alerjen, diyet etiketi) ve 3 kategori görünümü.
+    Kontrast kontrolü, logo alanı ve tipografi eşleştirmesi <b>yok</b>.</p>
+  </div>
+</section>
+
+<!-- ================= TAB 2 ================= -->
+<section class="panel" id="p1" hidden>
+  <div class="card">
+    <p class="thesis">Her ayar üç kutudan birine girer. Dördüncü kutu yoktur.<br>
+    Bir ayarın hangi kutuya gireceği tek soruyla belirlenir:
+    <b>bu, restoranı diğerlerinden ayırt eden bir şey mi, yoksa sadece bir düzen tercihi mi?</b></p>
+    <div class="tiers">
+      <div class="tier locked">
+        <div class="tier-head">
+          <div class="k">Locked</div>
+          <div class="d">Sistem sahibi. Kullanıcı bu kontrolü hiç görmez.</div>
+        </div>
+        <ul>
+          <li>Tipografi ölçeği ve hiyerarşi</li>
+          <li>Boşluk ritmi, kenar boşlukları</li>
+          <li>Dokunma hedefi boyutları</li>
+          <li>Kontrast alt sınırı (WCAG AA)</li>
+          <li>Ürün satırı / kart yapısı</li>
+          <li>Fiyat hizası ve para birimi biçimi</li>
+          <li>Sipariş düğmesinin yeri ve davranışı</li>
+          <li>Durum davranışları (tükendi, arama boş, yükleniyor)</li>
+          <li>Responsive davranış, 2 satırlık ürün adı taşması</li>
+          <li>Dil değiştiricinin konumu</li>
+        </ul>
+      </div>
+      <div class="tier choose">
+        <div class="tier-head">
+          <div class="k">Choosable</div>
+          <div class="d">Küratörlü, sonlu liste. Her seçenek önceden doğrulanmış.</div>
+        </div>
+        <ul>
+          <li>Şablon / yön
+            <div class="opts"><span class="opt">Sade</span><span class="opt">Klasik</span>
+            <span class="opt">Sıcak</span><span class="opt">Koyu</span></div>
+            <span class="q">kaç şablon? açık</span></li>
+          <li>Renk teması — <b>tek</b> marka renginden türetilir
+            <div class="opts"><span class="opt">otomatik palet</span><span class="opt">kontrast doğrulanır</span></div></li>
+          <li>Tipografi çifti (ayrı ayrı font değil)
+            <div class="opts"><span class="opt">Serif + Sans</span><span class="opt">Sans + Sans</span>
+            <span class="opt">Yüksek kontrast</span></div></li>
+          <li>Yoğunluk
+            <div class="opts"><span class="opt">Ferah</span><span class="opt">Sıkışık</span></div></li>
+          <li>Kategori görünümü <span class="opt">bugün var</span>
+            <div class="opts"><span class="opt">Sekme</span><span class="opt">Liste</span><span class="opt">Akordeon</span></div></li>
+          <li>Fotoğraf politikası — bölüm bazında hep/hiç
+            <div class="opts"><span class="opt">açık</span><span class="opt">kapalı</span></div></li>
+        </ul>
+      </div>
+      <div class="tier custom">
+        <div class="tier-head">
+          <div class="k">Customizable</div>
+          <div class="d">Tamamen serbest. Çünkü bunlar gerçekten <i>onların</i>.</div>
+        </div>
+        <ul>
+          <li>Logo <span class="new">bugün yok</span></li>
+          <li>Restoran adı ve karşılama cümlesi</li>
+          <li>Kapak görseli</li>
+          <li>Ürün fotoğrafları</li>
+          <li>Ürün adları, açıklamaları, fiyatları</li>
+          <li>Bölüm adları ve sırası</li>
+          <li>Marka rengi (tek giriş — sistem paleti üretir)</li>
+          <li>CTA düğmeleri <span class="opt">bugün var</span></li>
+          <li>Etkin diller <span class="new">bugün yok</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note"><b>Not:</b> "bugün yok" işaretli iki madde yeni özellik önerisi değil,
+    brief'in zaten istediği ama prototipte karşılığı olmayan alanlar (§17 çok dillilik) ya da
+    marka farklılaştırmasının çalışması için gereken tek eksik girdi (logo).
+    Logo'nun kapsama girip girmediği <b>Yaren/Erk kararı</b>.</p>
+  </div>
+</section>
+
+<!-- ================= TAB 3 ================= -->
+<section class="panel" id="p2" hidden>
+  <div class="card">
+    <p class="thesis">Sihirbaz <b>bir kez</b> çalışır. Bakım <b>hiçbir zaman</b> sihirbazdan geçmez.<br>
+    Aynı nesneler, iki farklı diziliş: ilk kurulumda rehberli sıra, sonrasında doğrudan erişim.</p>
+
+    <div class="lane">
+      <div class="lane-head"><b>İlk kurulum — bir kez</b>
+        <span>sıfırdan yayınlanabilir menüye. Masaüstü (brief §14 cihaz matrisi).</span></div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><span class="t">İçeriği getir</span>
+          <span class="h">CSV/JSON içe aktarma, PDF'ten metin çıkarma veya elle giriş.</span>
+          <span class="home">kalıcı ev: Items + Import</span></div>
+        <div class="step"><span class="n">2</span><span class="t">Yapıyı kur</span>
+          <span class="h">Bölümler, sıralama, görünürlük.</span>
+          <span class="home">kalıcı ev: Customise › Sections</span></div>
+        <div class="step"><span class="n">3</span><span class="t">Yön seç</span>
+          <span class="h">Şablon. Yerleşim değil, karakter seçimi.</span>
+          <span class="home">kalıcı ev: Template</span></div>
+        <div class="step"><span class="n">4</span><span class="t">Markanı ekle</span>
+          <span class="h">Logo, isim, tek marka rengi, tipografi çifti, kapak.</span>
+          <span class="home">kalıcı ev: Customise › Appearance</span></div>
+        <div class="step"><span class="n">5</span><span class="t">Dilleri aç</span>
+          <span class="h">Varsayılan dil zorunlu; ek diller sonradan da eklenebilir.</span>
+          <span class="home">kalıcı ev: Languages (yok)</span></div>
+        <div class="step"><span class="n">6</span><span class="t">Önizle ve yayınla</span>
+          <span class="h">Canlı önizleme bugün zaten var.</span>
+          <span class="home">kalıcı ev: Preview</span></div>
+      </div>
+    </div>
+
+    <div class="lane">
+      <div class="lane-head"><b>Bakım — sonsuza kadar</b>
+        <span>restoran sahibinin işi. Sihirbaz burada asla açılmaz.</span></div>
+      <div class="steps">
+        <div class="step"><span class="n">her gün</span><span class="t">Bugün ne yok?</span>
+          <span class="h">Stok/tükendi işareti, hızlı fiyat düzeltmesi.</span>
+          <span class="home">Items listesi</span> <span class="mobile">telefonda çalışmalı</span></div>
+        <div class="step"><span class="n">haftalık</span><span class="t">Ürün bakımı</span>
+          <span class="h">Ürün ekle/çıkar, fotoğraf, açıklama, sıralama.</span>
+          <span class="home">Items + düzenleme çekmecesi</span></div>
+        <div class="step"><span class="n">ara sıra</span><span class="t">Yapı değişikliği</span>
+          <span class="h">Sezon menüsü, yeni bölüm, yeni dil, marka güncellemesi.</span>
+          <span class="home">Customise / Languages</span></div>
+      </div>
+      <p class="note">Bugünkü prototipte bakım yüzeyi <b>zaten çalışıyor</b>: Items sekmesinde
+      sürükle-sırala, tekil ve toplu "mevcut" anahtarı, düzenleme çekmecesi.
+      Yani bakım için yeni bir yüzey icat etmeye gerek yok — eksik olan sadece
+      telefonda kullanılabilirlik.</p>
+    </div>
+
+    <p class="rule">Kural: sihirbazın her adımı, editörde <b>kalıcı bir sekmeye</b> karşılık gelir.
+    Sihirbaz o sekmelerin üstünden geçen bir sıralamadır, ayrı bir ürün değil.</p>
+    <p class="note"><span class="q">açık soru</span> İlk kurulum için rehberli bir sıra kapsamda mı,
+    yoksa her şey bugünkü sekmeli editörde mi kalmalı? Aşamalar her hâlükârda gerçek;
+    tartışma sadece sunum biçimi. Brief §28 gereği varsayım üretilmedi.</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var ITEMS=[
+    {n:'Mercimek çorbası',d:'ev usulü',p:60,s:'Başlangıç',img:true},
+    {n:'Çiğ köfte',d:'acılı, cevizli',p:80,s:'Başlangıç',img:false},
+    {n:'Adana kebap',d:'zırh kıyma, ateşte',p:120,s:'Ana yemek',img:true},
+    {n:'İçli köfte',d:'porsiyon 2 adet',p:95,s:'Ana yemek',img:false},
+    {n:'Şırdan',d:'günlük',p:110,s:'Ana yemek',img:false},
+    {n:'Künefe',d:'Antep fıstıklı',p:90,s:'Tatlı',img:false}
+  ];
+
+  // Her restoran: aynı kilitli yerleşim, farklı kimlik girdileri.
+  var R=[
+    {
+      id:'nar', label:'Nar Lokanta', kind:'üst segment',
+      inputs:'<b>Logo:</b> ince serif N · <b>Marka rengi:</b> #6B2737 · '+
+             '<b>Tipografi çifti:</b> Serif + Sans · <b>Fotoğraf:</b> kapalı · '+
+             '<b>Karşılama:</b> "akşam yemeği"',
+      on:{brand:'#6B2737',onbrand:'#ffffff',surface:'#fbf9f7',text:'#241a1c',muted:'#8a7a7d',
+          rule:'#e8e0e0',cover:'#3a1720',coverfg:'#f0e3e2',thumb:'#efe7e6',price:'#6B2737',
+          head:"Georgia,'Times New Roman',serif",body:"Helvetica,Arial,sans-serif",
+          logo:'round',logoChar:'N',namesize:'19px',nametrack:'.02em',namecase:'none',
+          itemsize:'12px',itemcase:'none',itemtrack:'0',coverpad:'18px 14px',
+          tag:'akşam yemeği · 19.00–23.30',photos:false},
+      off:{brand:'#00E5FF',onbrand:'#ffffff',surface:'#ffffff',text:'#333333',muted:'#bbbbbb',
+          rule:'#00E5FF',cover:'#FF00AA',coverfg:'#00E5FF',thumb:'#eeeeee',price:'#00E5FF',
+          head:"Impact,'Arial Black',sans-serif",body:"'Courier New',monospace",
+          logo:'soft',logoChar:'N',namesize:'30px',nametrack:'0',namecase:'uppercase',
+          itemsize:'13px',itemcase:'uppercase',itemtrack:'.06em',coverpad:'26px 14px',
+          tag:'HOŞGELDİNİZ !!! EN İYİ LEZZET',photos:true,
+          flags:['Kapak zemini ile yazı arasında kontrast AA altında.',
+                 'Gövde metni monospace, başlık Impact — eşleşme doğrulanmamış.',
+                 'Üç serbest renk birbirini tutmuyor; fiyat rengi arka planda kayboluyor.']}
+    },
+    {
+      id:'adana', label:'Adanadayım Pub', kind:'gündelik',
+      inputs:'<b>Logo:</b> dolu A · <b>Marka rengi:</b> #C4551A · '+
+             '<b>Tipografi çifti:</b> Sans + Sans · <b>Fotoğraf:</b> açık · '+
+             '<b>Karşılama:</b> "masa 1"',
+      on:{brand:'#C4551A',onbrand:'#ffffff',surface:'#fdfaf6',text:'#231b14',muted:'#8b7a68',
+          rule:'#ece2d6',cover:'#231b14',coverfg:'#f6e9d8',thumb:'#efe4d6',price:'#231b14',
+          head:"'Trebuchet MS',Helvetica,sans-serif",body:"Helvetica,Arial,sans-serif",
+          logo:'fill',logoChar:'A',namesize:'20px',nametrack:'0',namecase:'none',
+          itemsize:'12px',itemcase:'none',itemtrack:'0',coverpad:'16px 14px',
+          tag:'ocakbaşı · her gün 12.00–24.00',photos:true},
+      off:{brand:'#FFEB3B',onbrand:'#ffffff',surface:'#ffffff',text:'#555555',muted:'#cccccc',
+          rule:'#f0f0f0',cover:'#FFEB3B',coverfg:'#ffffff',thumb:'#f4f4f4',price:'#FFEB3B',
+          head:"'Arial Black',sans-serif",body:"'Arial Black',sans-serif",
+          logo:'soft',logoChar:'A',namesize:'26px',nametrack:'0',namecase:'uppercase',
+          itemsize:'13px',itemcase:'uppercase',itemtrack:'.04em',coverpad:'24px 14px',
+          tag:'ADANADAYIM PUB HOŞ GELDİNİZ',photos:true,
+          flags:['Sarı üzerine beyaz: kapak yazısı okunmuyor (kontrast ≈1.2:1).',
+                 'Başlık ve gövde aynı ağır font — hiyerarşi kayboldu.',
+                 'Fiyatlar sarı; beyaz zeminde seçilemiyor.']}
+    },
+    {
+      id:'deniz', label:'Deniz Kahve', kind:'kahve / hafif',
+      inputs:'<b>Logo:</b> çizgi D · <b>Marka rengi:</b> #2E6B6B · '+
+             '<b>Tipografi çifti:</b> Yüksek kontrast · <b>Fotoğraf:</b> açık · '+
+             '<b>Karşılama:</b> "sahil"',
+      on:{brand:'#2E6B6B',onbrand:'#ffffff',surface:'#f8faf9',text:'#172422',muted:'#77918e',
+          rule:'#e0e9e7',cover:'#eef4f2',coverfg:'#1d3330',thumb:'#e4edeb',price:'#172422',
+          head:"Georgia,'Times New Roman',serif",body:"Verdana,Geneva,sans-serif",
+          logo:'round',logoChar:'D',namesize:'19px',nametrack:'.01em',namecase:'none',
+          itemsize:'12px',itemcase:'none',itemtrack:'0',coverpad:'18px 14px',
+          tag:'sahil · 08.00–20.00',photos:true},
+      off:{brand:'#111111',onbrand:'#111111',surface:'#ffffff',text:'#111111',muted:'#111111',
+          rule:'#111111',cover:'#111111',coverfg:'#1a1a1a',thumb:'#111111',price:'#111111',
+          head:"Verdana,Geneva,sans-serif",body:"Georgia,serif",
+          logo:'soft',logoChar:'D',namesize:'22px',nametrack:'0',namecase:'none',
+          itemsize:'12px',itemcase:'none',itemtrack:'0',coverpad:'20px 14px',
+          tag:'deniz kahve',photos:true,
+          flags:['Üç renk de neredeyse aynı: kapak yazısı siyah üstüne siyah.',
+                 '"+" düğmesi metni marka rengiyle aynı — düğme görünmez.',
+                 'Serif gövde + sans başlık ters çevrilmiş; ölçek ilişkisi doğrulanmamış.']}
+    }
+  ];
+
+  var mode='on', photo='full';
+
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+  function phoneHTML(r){
+    var c=r[mode];
+    var showPhotos=c.photos;
+    var vars='--m-brand:'+c.brand+';--m-onbrand:'+c.onbrand+';--m-surface:'+c.surface+
+      ';--m-text:'+c.text+';--m-muted:'+c.muted+';--m-rule:'+c.rule+';--m-cover:'+c.cover+
+      ';--m-coverfg:'+c.coverfg+';--m-thumb:'+c.thumb+';--m-price:'+c.price+
+      ';--m-head:'+c.head+';--m-body:'+c.body+';--m-namesize:'+c.namesize+
+      ';--m-nametrack:'+c.nametrack+';--m-namecase:'+c.namecase+
+      ';--m-itemsize:'+c.itemsize+';--m-itemcase:'+c.itemcase+
+      ';--m-itemtrack:'+c.itemtrack+';--m-coverpad:'+c.coverpad+';';
+
+    var rows='',lastSec='';
+    for(var i=0;i<ITEMS.length;i++){
+      var it=ITEMS[i];
+      if(it.s!==lastSec){rows+='<div class="m-sec">'+esc(it.s)+'</div>';lastSec=it.s;}
+      var thumb='';
+      if(showPhotos){
+        // "Yarım" kapsam: yalnızca img:true olan ürünlerde fotoğraf var.
+        var has = (photo==='full') ? true : it.img;
+        thumb = has ? '<span class="m-thumb">foto</span>'
+                    : '<span class="m-thumb miss">yok</span>';
+      }
+      rows+='<div class="m-row">'+thumb+
+        '<span class="m-body"><span class="m-iname">'+esc(it.n)+'</span>'+
+        '<span class="m-idesc">'+esc(it.d)+'</span></span>'+
+        '<span class="m-price">₺'+it.p+'</span>'+
+        '<button class="m-add" aria-label="'+esc(it.n)+' ekle">+</button></div>';
+    }
+
+    var flags='';
+    if(mode==='off'&&c.flags){
+      for(var f=0;f<c.flags.length;f++) flags+='<div class="flag bad">▲ '+esc(c.flags[f])+'</div>';
+      if(photo==='half') flags+='<div class="flag bad">▲ Ürünlerin bir kısmında fotoğraf var, bir kısmında yok — liste delik deşik görünüyor.</div>';
+    }else{
+      flags='<div class="flag ok">✓ Kontrast, ölçek ve boşluk kilitli; kimlik girdileri serbest.</div>';
+      if(photo==='half') flags+='<div class="flag ok">✓ Fotoğraf kapsamı düşük olduğu için bu bölümde fotoğraf sütunu tamamen kapatıldı.</div>';
+    }
+
+    return '<div class="phone-wrap">'+
+      '<div class="phone-cap">'+esc(r.label)+' · '+esc(r.kind)+'</div>'+
+      '<div class="phone"><div class="notch"></div>'+
+      '<div class="screen" style="'+vars+'">'+
+        '<div class="m-top"><span>Masa 1</span><span class="m-badge">Sepet 0</span></div>'+
+        '<div class="m-cover">'+
+          '<div class="m-logo '+c.logo+'"><span>'+c.logoChar+'</span></div>'+
+          '<div class="m-name">'+esc(r.label)+'</div>'+
+          '<div class="m-tag">'+esc(c.tag)+'</div>'+
+        '</div>'+
+        '<div class="m-nav"><span class="m-chip on">Tümü</span><span class="m-chip">Başlangıç</span>'+
+          '<span class="m-chip">Ana yemek</span><span class="m-chip">Tatlı</span></div>'+
+        '<div class="m-list">'+rows+'</div>'+
+      '</div></div>'+
+      '<div class="flags">'+flags+'</div>'+
+      '<div class="inputs">'+r.inputs+'</div>'+
+    '</div>';
+  }
+
+  function render(){
+    var h='';
+    for(var i=0;i<R.length;i++) h+=phoneHTML(R[i]);
+    document.getElementById('phones').innerHTML=h;
+  }
+
+  function press(segId,btn){
+    var bs=document.getElementById(segId).querySelectorAll('button');
+    for(var i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed','false');
+    btn.setAttribute('aria-pressed','true');
+  }
+
+  window.setMode=function(m,btn){
+    mode=m; press('modeSeg',btn);
+    document.getElementById('modeSeg').className = (m==='off') ? 'seg danger' : 'seg';
+    render();
+  };
+  window.setPhoto=function(p,btn){ photo=p; press('photoSeg',btn); render(); };
+  window.showTab=function(i,btn){
+    var ts=document.querySelectorAll('.tab');
+    for(var t=0;t<ts.length;t++) ts[t].setAttribute('aria-selected','false');
+    btn.setAttribute('aria-selected','true');
+    for(var p=0;p<3;p++) document.getElementById('p'+p).hidden=(p!==i);
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>

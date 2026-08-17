@@ -5,5 +5,6 @@ Capture begins with the first QRPOC product task after the evidence system is co
 | Step | Date | Task | Type | Status | Record |
 | --- | --- | --- | --- | --- | --- |
 | 001 | 2026-08-17 | Menu workflow — customer poster vs list, two versions kept | decision | captured | [record](steps/2026-08-17-001-menu-workflow-poster-vs-list.md) |
+| 002 | 2026-08-17 | Admin menu build — guardrail model, customization tiers, setup vs maintenance (supersedes 001's framing) | decision | captured | [record](steps/2026-08-17-002-admin-menu-guardrails.md) |
 
 Status values: `incomplete`, `captured`, `validated`, or `rejected`.
