@@ -1,6 +1,7 @@
 # QRPOC working rules
 
 - The binding product brief is `docs/PRODUCT-BRIEF.md` (QRPOC UI/UX Product Brief, 2026-08-15). Scope is locked: follow its §2 source-of-truth priority order and §28 decision protocol. Do not recover requirements from Git history, retired artifacts, or prior chats.
+- This repo holds design decisions, the product brief, and case-study evidence — no runnable application code. The actual app (Lovable-connected) lives in a separate repo, `erkucman/qrpoc` (Erk's). The two repos are intentionally kept separate, not mirrored (2026-08-17).
 - `qrpoc-atlas.html` (repo root) is the technical inventory of the current prototype's implementation state. It is evidence of existing behavior, not a source of target requirements (brief §2, item 5).
 - Do not modify this repository beyond the task Yaren has assigned.
 - Do not invent project assumptions. Treat information as unknown unless it comes from the current task or an explicitly designated canonical source, and ask Yaren when a decision is required.
