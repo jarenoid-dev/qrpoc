@@ -605,6 +605,20 @@ Tekrarlanan görevlerde tekrar eden component ve interaction patternleri kullan�
 
 ---
 
+## Device matrix
+
+Locked primary device per surface (per Erk, 2026-08-17):
+
+| Surface         | Primary device            | Design consequence                                              |
+| --------------- | ------------------------- | --------------------------------------------------------------- |
+| Customer        | Phone-first               | Table tablets possible later; not optimized for in first phase  |
+| Kitchen         | Tablet                    | Fixed/mounted, always-on operations screen                      |
+| Waiter          | Phone                     | On the move, one-handed, fast use                               |
+| Service Manager | Phone (worst-case)        | Standing/moving, hands may be full                              |
+| Admin           | Desktop-first             | Mobile-adaptable; some tasks doable on phone while out          |
+
+---
+
 ## App-specific density
 
 Aynı design system, aynı layout anlamına gelmez.
