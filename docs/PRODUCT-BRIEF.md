@@ -1,6 +1,8 @@
 <!--
 Provenance: delivered verbatim by Yaren in chat on 2026-08-15.
 Binding per its own §1. Do not edit without Yaren's approval.
+Amendments (with Yaren's approval): §14 device matrix added by Erk 2026-08-17;
+§2 top authority (approved deck) + §25 renumbering to match the approved deck, 2026-08-18.
 -->
 
 # QRPOC UI/UX Product Brief
@@ -27,12 +29,13 @@ Bir konu bu brief'te veya mevcut üründe açık değilse, tasarımcı bunu **a�
 
 Kaynaklar birbiriyle çelişirse şu sıra geçerlidir:
 
-1. **Bu brief**
-2. **Bu brief'i oluşturan kilitlenmiş güncel ürün kararları**
-3. **Mevcut backend, database ve çalışan güncel ürün davranışı**
-4. **MenuTiger referans analizi**, yalnızca UX pattern ve görsel sistem referansı olarak
-5. **`qrpoc-atlas.html`**, yalnızca eski / mevcut prototype kodunun teknik envanteri olarak
-6. Daha eski analiz ve karar notları
+1. **Onaylı Figma Slides deck'i "QRPOC - Product Summary - UX"** (Yaren + Erk onaylı) — kilitli ürün kararlarının ve güncel tasarım kapsamının tek doğruluk kaynağı. Bu brief onun altındadır; çelişkide **deck geçerlidir**. (Adres: `docs/COORDINATES.md`.)
+2. **Bu brief**
+3. **Bu brief'i oluşturan kilitlenmiş güncel ürün kararları**
+4. **Mevcut backend, database ve çalışan güncel ürün davranışı**
+5. **MenuTiger referans analizi**, yalnızca UX pattern ve görsel sistem referansı olarak
+6. **`qrpoc-atlas.html`**, yalnızca eski / mevcut prototype kodunun teknik envanteri olarak
+7. Daha eski analiz ve karar notları
 
 Eski dokümanlardaki bir karar bu brief ile çelişiyorsa **eski karar geçersizdir**.
 
@@ -1015,7 +1018,11 @@ Yalnızca sınırları görünür hale getirir.
 
 ---
 
-## Step 1. Domain ve state vocabulary
+## Step 1. Shared foundation
+
+UI çizmeden önce iki temel birlikte kurulur: ortak domain/state sözlüğü ve paylaşılan görsel temel. (Onaylı deck'te bu tek adımdır: "Adım 1 · Ortak tasarım temeli".)
+
+### 1a. Domain ve state vocabulary
 
 UI çizmeden önce ortak domain isimlerini ve mevcut state'leri doğrulayın.
 
@@ -1035,9 +1042,7 @@ ve mevcut status'lar.
 
 Aynı obje farklı uygulamalarda farklı isimlerle anlatılmamalıdır.
 
----
-
-## Step 2. Shared visual foundation
+### 1b. Shared visual foundation
 
 Tanımlayın:
 
@@ -1054,7 +1059,7 @@ Bu aşamada bütün uygulamalar için tek shell tasarlanmayacaktır.
 
 ---
 
-## Step 3. Customer Menu + Admin Menu Editor vertical slice
+## Step 2. Customer Menu + Admin Menu Editor vertical slice
 
 İlk tam domain olarak **Menu** ele alınmalıdır.
 
@@ -1093,7 +1098,7 @@ Amaç:
 
 ---
 
-## Step 4. Customer Order → Kitchen
+## Step 3. Customer Order → Kitchen
 
 Sonra siparişin mutfağa ulaştığı mevcut zincir çözülür.
 
@@ -1109,7 +1114,7 @@ Kitchen UI bu aşamada sade üç kolonlu çalışma yüzeyi olarak tamamlanır.
 
 ---
 
-## Step 5. Waiter
+## Step 4. Waiter
 
 Kitchen sonrası garsonun gerçek operasyon zinciri çözülür.
 
@@ -1125,7 +1130,7 @@ Garson için başka app'lere ait yönetim araçları eklenmez.
 
 ---
 
-## Step 6. Requests + Service Manager
+## Step 5. Requests + Service Manager
 
 Customer'ın configurable CTA / request sistemi ile Service Manager'ın request overview'i aynı vertical slice içinde kontrol edilir.
 
@@ -1139,7 +1144,7 @@ Customer action
 
 ---
 
-## Step 7. Admin operational modules
+## Step 6. Admin operational modules
 
 Ana frontline akışlar oturduktan sonra Admin Portal'ın mevcut ağır modülleri çözülür.
 
@@ -1158,7 +1163,7 @@ Yeni interaction grammar yalnız mevcut component sistemi yetersizse oluşturulu
 
 ---
 
-## Step 8. Multilingual pass
+## Step 7. Multilingual pass
 
 Bütün customer-facing editable content `1..n language` modeli açısından kontrol edilir.
 
@@ -1170,7 +1175,7 @@ Bozuluyorsa çözüm ölçeklenebilir değildir.
 
 ---
 
-## Step 9. State pass
+## Step 8. State pass
 
 Her ekran yalnız happy path ile değerlendirilmemelidir.
 
@@ -1190,7 +1195,7 @@ tutarlı şekilde tasarlanmalıdır.
 
 ---
 
-## Step 10. Cross-app consistency pass
+## Step 9. Cross-app consistency pass
 
 Aynı domain objesinin beş uygulamadaki temsili karşılaştırılır.
 

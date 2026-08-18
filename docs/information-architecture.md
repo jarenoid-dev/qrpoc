@@ -1,6 +1,6 @@
 # QRPOC — Information Architecture (Level 1)
 
-**Status:** Approved (Yaren, 2026-08-17)
+**Status:** Approved (Yaren, 2026-08-17). 2026-08-18: Kitchen orta-durum etiketi "In Progress" → "Preparing" olarak deck ve brief §9 ile hizalandı.
 **Level:** Surface + module (top-level structure only)
 **Canonical source:** Figma Slides "QRPOC - Product Summary - UX" — this file is a secondary reference. On conflict, the deck wins.
 **Figma reference (App Map board):** https://www.figma.com/board/SubiG2hOBntPGbbCWioCiU/QRPOC---Info-Architecture
@@ -15,7 +15,7 @@ Every surface is entered from the shared **QRPOC** hub. Customer, Kitchen, Waite
 Menu → Customization → Order
 
 ### 2. Kitchen (Mutfak)
-New → In Progress → Ready
+New → Preparing → Ready
 
 ### 3. Waiter (Garson)
 Table → Order → Check
