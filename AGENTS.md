@@ -4,6 +4,7 @@
 
 - The binding product brief is `docs/PRODUCT-BRIEF.md` (QRPOC UI/UX Product Brief, 2026-08-15). Scope is locked: follow its §2 source-of-truth priority order and §28 decision protocol. Do not recover requirements from Git history, retired artifacts, generated memory, or prior chats.
 - Start documentation discovery at `docs/README.md`. Its binding, working-context, implementation-evidence, reference, and process-evidence groups must remain separate.
+- Canonical Figma/GitHub/local locations (working folder, Product Summary deck, IA board, design system, prototype file, repos, keys) are registered in `docs/COORDINATES.md`. Use it to locate artifacts; it grants no content authority.
 - `docs/MENU-WORKFLOW-CONTEXT.md` is the current shared context for Menu Workflow prototype validation. Its provisional sections are explicitly non-binding, not approved, and not product requirements.
 - This repository holds product/design documentation and case-study evidence. The canonical Lovable-connected application lives in the separate `erkucman/qrpoc` repository; the two repositories are intentionally not mirrors (2026-08-17).
 - `docs/qrpoc-atlas.html` and `loveable prototype/` are evidence of an older/current prototype snapshot, not sources of target requirements or proof of the canonical app's current state.

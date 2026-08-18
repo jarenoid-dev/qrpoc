@@ -4,6 +4,10 @@ Last reviewed: 2026-08-18
 
 This is a routing index, not a new source-of-truth hierarchy. Authority comes from each linked artifact and the binding brief's §2 priority order.
 
+## Where QRPOC lives
+
+[`COORDINATES.md`](COORDINATES.md) is the canonical registry of QRPOC's locations: the Figma working folder, the Product Summary deck, the IA board, the design system, the prototype file, the GitHub repos, and local paths. It records locations only and grants no content authority.
+
 ## Approved / binding product context
 
 - **Figma Slides — `QRPOC - Product Summary - UX`:** approved Yaren + Erk source above the repository brief. Its file URL is not recorded in this repository; do not guess it.
