@@ -50,12 +50,22 @@ Verification: ✅ confirmed this session · 📄 recorded in a repo doc · ⚠�
   `jarenoid-dev/qrpoc` (private). — ✅ (git remote)
 
 - **Canonical Lovable-connected app — separate, intentionally not mirrored.**
-  `erkucman/qrpoc` (Erk's). — ⚠️ The connected account returned 404 on 2026-08-18;
-  access from this account is unverified.
+  `erkucman/qrpoc` (Erk's) · live at **`qrpoc.lovable.app`** (deck slide 38). — ⚠️ The
+  connected account returned 404 on `erkucman/qrpoc` on 2026-08-18; access from this
+  account is unverified.
 
 ## Local
 
 - **Working directory:** `~/Work/10-projects/qrpoc` — prefix `QRPOC`, status `active`
   (`PROJECTS.yaml`). — 📄
-- **Local prototype snapshot** — non-authoritative implementation evidence, currently
-  untracked in git: `loveable prototype/`. See README §Implementation evidence. — ✅
+- **Local prototype snapshot** — Yaren's Lovable playground, exported locally; non-authoritative
+  implementation evidence, currently untracked in git: `loveable prototype/`. Live home is
+  Lovable (`qrpoc.lovable.app`), so this local copy is disposable. See README §Implementation
+  evidence. — ✅
+
+## Collaboration (Yaren ↔ Erk)
+
+Flexible, not rigid. General split: **Yaren = docs + Figma + prototype**, **Erk = backend**.
+The backend is connected to Lovable, so Yaren also prototypes in Lovable (Erk: "use Lovable as
+a playground"). The deck (slide 38) documents a cleaner version of this split; Yaren's direct
+statement governs the actual working arrangement.

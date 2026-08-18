@@ -38,7 +38,8 @@ The concrete design question: **where does the editor need guardrails, and what 
     high capability with controlled density), §14 device matrix (Admin desktop-first,
     mobile-adaptable), §17 (1..n content languages, at least one; add a language and bind content;
     store and render characters correctly; no automatic translation; editor UI must not hardcode two
-    fixed TR/EN columns), §25 Step 3 (Menu is the first full vertical slice: Admin Menu Editor and
+    fixed TR/EN columns), §25 Step 3 [historical: §25 was renumbered to match the deck on
+    2026-08-18 — Menu is now Step 2] (Menu is the first full vertical slice: Admin Menu Editor and
     Customer Menu designed together), §28 (if the brief, backend and MenuTiger do not answer, leave
     the question open rather than inventing a feature).
   - Read-only source read of the Lovable prototype copy in this repo (`loveable prototype/src/`).
