@@ -1,0 +1,22 @@
+Code Connect availability check — 2026-08-18
+Figma file: Tablyx – Design System (fileKey SznEOiskoPnC0o9GWd7DS9)
+Method: Figma MCP tools (read-only), two independent calls.
+
+--- Tool 1: list_file_components_for_code_connect (fileKey only) ---
+Response:
+  You need a Dev or Full seat on an Organization or Enterprise plan to use Code Connect.
+  Ask a Figma admin to upgrade your plan or seat.
+  Learn more: https://developers.figma.com/docs/code-connect/
+  Figma Debug UUID: 450272ed-500d-4f63-b03a-52828db9e9f5
+
+--- Tool 2: get_code_connect_suggestions (nodeId 1:637 = Table header, excludeMappingPrompt:true) ---
+Response:
+  You need a Dev or Full seat on an Organization or Enterprise plan to use Code Connect.
+  Ask a Figma admin to upgrade your plan or seat.
+  Learn more: https://developers.figma.com/docs/code-connect/
+  Figma Debug UUID: 1db7cb67-ca67-4133-a7d7-fce7c7c3a891
+
+Conclusion: Code Connect is not available on the current Figma plan/seat.
+Second, independent blocker: the Tablyx library is not published to a team library
+(Code Connect only maps published components). Both must be resolved before any
+.figma.ts file can be authored or published.
