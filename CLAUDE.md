@@ -1,8 +1,10 @@
 # QRPOC working rules
 
 - The binding product brief is `docs/PRODUCT-BRIEF.md` (QRPOC UI/UX Product Brief, 2026-08-15). Scope is locked: follow its §2 source-of-truth priority order and §28 decision protocol. Do not recover requirements from Git history, retired artifacts, or prior chats.
+- Start documentation discovery at `docs/README.md`. Its binding, working-context, implementation-evidence, reference, and process-evidence groups must remain separate.
+- `docs/MENU-WORKFLOW-CONTEXT.md` is the current shared context for Menu Workflow prototype validation. Its provisional sections are explicitly non-binding, not approved, and not product requirements.
 - This repo holds design decisions, the product brief, and case-study evidence — no runnable application code. The actual app (Lovable-connected) lives in a separate repo, `erkucman/qrpoc` (Erk's). The two repos are intentionally kept separate, not mirrored (2026-08-17).
-- `qrpoc-atlas.html` (repo root) is the technical inventory of the current prototype's implementation state. It is evidence of existing behavior, not a source of target requirements (brief §2, item 5).
+- `docs/qrpoc-atlas.html` and `loveable prototype/` are technical evidence from an older/current prototype snapshot. They are not target requirements or proof of the canonical app's current state (brief §2, item 5).
 - Do not modify this repository beyond the task Yaren has assigned.
 - Do not invent project assumptions. Treat information as unknown unless it comes from the current task or an explicitly designated canonical source, and ask Yaren when a decision is required.
 - `docs/REFERENCE-ANALYSIS.md` contains MenuTiger observations only. It is not a source of QRPOC requirements, decisions, or feature mappings.

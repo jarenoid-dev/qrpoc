@@ -1,0 +1,575 @@
+<title>QRPOC Architecture Atlas</title>
+<style>
+  :root {
+    --bg: #F6F7F4;
+    --surface: #FFFFFF;
+    --surface-2: #EFF1EC;
+    --ink: #1F2723;
+    --muted: #5C6660;
+    --line: #E1E5DF;
+    --accent: #0E6A5A;
+    --accent-ink: #0B5347;
+    --good-bg: #E3F1E8;   --good-ink: #1F6B3F;
+    --warn-bg: #FBEEDC;   --warn-ink: #92580E;
+    --stub-bg: #EDEDF5;   --stub-ink: #4C4C78;
+    --off-bg:  #F0E7E7;   --off-ink:  #8A3B34;
+    --code-bg: #EFF1EC;
+    --shadow: 0 1px 2px rgba(31,39,35,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141816;
+      --surface: #1C211E;
+      --surface-2: #232A26;
+      --ink: #E7ECE8;
+      --muted: #9BA6A0;
+      --line: #2C332F;
+      --accent: #43B99E;
+      --accent-ink: #6FCDB8;
+      --good-bg: #1D3327;  --good-ink: #7FC79A;
+      --warn-bg: #3A2C17;  --warn-ink: #E0A85F;
+      --stub-bg: #272736;  --stub-ink: #A9A9D6;
+      --off-bg:  #342222;  --off-ink:  #D98C82;
+      --code-bg: #232A26;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141816;
+    --surface: #1C211E;
+    --surface-2: #232A26;
+    --ink: #E7ECE8;
+    --muted: #9BA6A0;
+    --line: #2C332F;
+    --accent: #43B99E;
+    --accent-ink: #6FCDB8;
+    --good-bg: #1D3327;  --good-ink: #7FC79A;
+    --warn-bg: #3A2C17;  --warn-ink: #E0A85F;
+    --stub-bg: #272736;  --stub-ink: #A9A9D6;
+    --off-bg:  #342222;  --off-ink:  #D98C82;
+    --code-bg: #232A26;
+    --shadow: none;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Avenir Next", "Seravek", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.55;
+    margin: 0;
+    padding: 0 20px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1020px; margin: 0 auto; }
+
+  header.doc {
+    max-width: 1020px;
+    margin: 48px auto 8px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.08;
+    margin: 0 0 12px;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+  }
+  .lede { color: var(--muted); font-size: 16.5px; max-width: 68ch; margin: 0 0 18px; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .meta-row span {
+    font-size: 12.5px;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  nav.toc {
+    max-width: 1020px;
+    margin: 20px auto 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  nav.toc a {
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--accent-ink);
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--accent); outline: none; }
+
+  h2 {
+    font-size: 24px;
+    letter-spacing: -.01em;
+    margin: 56px 0 6px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    text-wrap: balance;
+  }
+  h2 .sec { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 10px; }
+  h3 { font-size: 17.5px; margin: 30px 0 8px; }
+  p { margin: 10px 0; max-width: 78ch; }
+  .kicker { color: var(--muted); font-size: 14.5px; margin: 0 0 18px; max-width: 72ch; }
+
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .88em;
+  }
+  code { background: var(--code-bg); padding: 1.5px 6px; border-radius: 5px; }
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); margin: 16px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: var(--muted);
+    padding: 9px 13px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  td { padding: 9px 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.fname { font-weight: 600; min-width: 180px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .chip {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    padding: 2px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .chip.working  { background: var(--good-bg); color: var(--good-ink); }
+  .chip.partial  { background: var(--warn-bg); color: var(--warn-ink); }
+  .chip.stub     { background: var(--stub-bg); color: var(--stub-ink); }
+  .chip.disabled { background: var(--off-bg);  color: var(--off-ink); }
+
+  .callout {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 18px 0;
+    font-size: 14.5px;
+    max-width: 80ch;
+  }
+  .callout.warn { border-left-color: var(--warn-ink); }
+
+  .statgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 18px 0; }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+  }
+  .stat .v { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat .k { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-top: 2px; }
+
+  .diagram {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  pre.mermaid { margin: 0; display: flex; justify-content: center; }
+
+  ul { padding-left: 22px; margin: 10px 0; max-width: 80ch; }
+  li { margin: 5px 0; }
+  li::marker { color: var(--accent); }
+  ol { padding-left: 22px; max-width: 80ch; }
+  ol li { margin: 7px 0; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 4px; font-size: 13px; color: var(--muted); }
+
+  .foot {
+    margin-top: 64px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 80ch;
+  }
+  a { color: var(--accent-ink); }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+</style>
+
+<header class="doc">
+  <p class="eyebrow">QRPOC · source-level reference · 2026-08-15</p>
+  <h1>QRPOC Architecture Atlas</h1>
+  <p class="lede">Every feature and architectural decision in the “Restaurant POC” Lovable prototype — reconstructed from a full read of the source tree (<span class="mono">~16,700 LOC</span>), its Supabase migrations, and the deployed bundle at <span class="mono">qrpoc.lovable.app</span>.</p>
+  <div class="meta-row">
+    <span>TanStack Start · React SSR</span>
+    <span>Cloudflare Workers</span>
+    <span>Supabase — Auth · Postgres/RLS · Realtime · Storage</span>
+    <span>Bun · Vite · Tailwind v4 · shadcn/Radix</span>
+    <span>Built-in MCP server</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#overview">System overview</a>
+  <a href="#roles">Roles &amp; routes</a>
+  <a href="#features">Feature catalog</a>
+  <a href="#data">Data model</a>
+  <a href="#architecture">Architecture decisions</a>
+  <a href="#maturity">Maturity map</a>
+  <a href="#risks">Risks &amp; gaps</a>
+</nav>
+
+<main>
+
+<h2 id="overview"><span class="sec">01</span>System overview</h2>
+<p class="kicker">A multi-tenant restaurant operations platform: anonymous guests order via table QR codes, seven staff roles run the floor, kitchen, menu, inventory and procurement, and AI agents can connect through a built-in MCP server. One codebase, one Supabase project, no separate backend service.</p>
+
+<div class="statgrid">
+  <div class="stat"><div class="v">16</div><div class="k">routes</div></div>
+  <div class="stat"><div class="v">7</div><div class="k">staff roles</div></div>
+  <div class="stat"><div class="v">~100</div><div class="k">features audited</div></div>
+  <div class="stat"><div class="v">42</div><div class="k">DB tables referenced</div></div>
+  <div class="stat"><div class="v">5</div><div class="k">realtime channels</div></div>
+  <div class="stat"><div class="v">2</div><div class="k">DB triggers</div></div>
+  <div class="stat"><div class="v">5</div><div class="k">MCP tools</div></div>
+  <div class="stat"><div class="v">2</div><div class="k">storage buckets</div></div>
+</div>
+
+<div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  subgraph CLIENTS["Clients"]
+    G["Guest phone<br/>QR scan, anonymous"]
+    S["Staff browser<br/>7 roles, Supabase Auth"]
+    AI["AI agents<br/>MCP clients"]
+  end
+
+  subgraph CF["Cloudflare Worker - TanStack Start"]
+    SSR["SSR shell + hydration<br/>no server data layer"]
+    MCP["/mcp endpoint<br/>5 read-only tools"]
+  end
+
+  subgraph SUPA["Supabase project"]
+    AUTH["Auth<br/>password, magic link, OAuth issuer"]
+    DB[("Postgres + RLS<br/>42 tables")]
+    RT["Realtime<br/>5 channels"]
+    STOR["Storage<br/>menu-assets, menu-canva"]
+    T1["trigger: deduct_inventory_on_serve"]
+    T2["trigger: enqueue_pos_event"]
+  end
+
+  G -->|"loads app"| SSR
+  S -->|"loads app"| SSR
+  G -->|"anon key, direct"| DB
+  S -->|"user JWT, direct"| DB
+  S --> AUTH
+  AI -->|"OAuth via Supabase"| MCP
+  MCP -->|"forwards user JWT"| DB
+  G -.->|"order status"| RT
+  S -.->|"boards refresh"| RT
+  DB --- T1
+  DB --- T2
+</pre>
+</div>
+
+<p><strong>The single most important architectural fact:</strong> the Cloudflare Worker only renders HTML and hosts the MCP endpoint. <em>All application data access happens directly from the browser to Supabase</em> using the public (publishable) key — there are zero server-side data routes, zero <code>.rpc()</code> calls, and no privileged service key anywhere in the codebase. Every guarantee about who can see or change what rests on Postgres Row Level Security, plus two database triggers that hold the only server-side business logic.</p>
+
+<p><strong>The core loop that actually works end-to-end:</strong> guest scans QR → anonymous session → orders from a themed or Canva-designed menu → kitchen advances items (pending → preparing → ready) → waiter delivers (→ served) → a DB trigger deducts recipe ingredients from inventory, writes the consumption ledger and arms low-stock alerts → shopping list → purchase order → goods receipt restocks. Payments, POS delivery, ERP sync and AI import are staged UI shells around this loop (see the <a href="#maturity">maturity map</a>).</p>
+
+<h2 id="roles"><span class="sec">02</span>Roles &amp; routes</h2>
+<p class="kicker">Seven staff roles plus anonymous guests. <code>ROLE_HOME</code> maps each role to a home screen after login; <code>RequireRole</code> redirects off-role users to their own home instead of showing 403. All gating is client-side — enforcement is RLS.</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>Route</th><th>Purpose</th><th>Access guard (client-side)</th><th>Realtime</th></tr></thead>
+  <tbody>
+    <tr><td class="fname"><code>/</code></td><td>Landing; auto-redirects authenticated users to their role home</td><td>Public</td><td>—</td></tr>
+    <tr><td class="fname"><code>/login</code></td><td>Staff email/password sign-in, safe <code>?next=</code> redirect</td><td>Public</td><td>—</td></tr>
+    <tr><td class="fname"><code>/t/$qrToken</code></td><td>QR entry: resolve table, bootstrap anonymous guest session</td><td>Public (anon)</td><td>—</td></tr>
+    <tr><td class="fname"><code>/menu</code></td><td>Guest menu (classic cards or Canva design), cart, request buttons</td><td>Guest session in localStorage</td><td>—</td></tr>
+    <tr><td class="fname"><code>/order/$orderId</code></td><td>Live order status tracking</td><td>None — order UUID is the capability</td><td><code>order:{id}</code></td></tr>
+    <tr><td class="fname"><code>/check</code></td><td>Bill: pay all / split equally / pay mine (simulated)</td><td>Guest session</td><td>—</td></tr>
+    <tr><td class="fname"><code>/kitchen</code></td><td>3-column kitchen board, advances item status</td><td>⚠ Any authenticated profile — no role check, no restaurant scoping</td><td><code>kitchen-board</code> (unfiltered)</td></tr>
+    <tr><td class="fname"><code>/waiter</code></td><td>Requests inbox, delivery tabs, shift sessions</td><td>waiter · restaurant_owner · admin</td><td><code>waiter-{rid}</code></td></tr>
+    <tr><td class="fname"><code>/service</code></td><td>Floor grid, waiter assignment, kitchen monitor, request reassignment</td><td>service_manager · restaurant_owner · franchise_manager · admin</td><td><code>svc-{rid}</code></td></tr>
+    <tr><td class="fname"><code>/restaurant</code></td><td>Owner home: KPIs, staff/buttons/QR/payments/performance tabs</td><td>restaurant_owner · admin</td><td><code>owner-orders-{rid}</code></td></tr>
+    <tr><td class="fname"><code>/menu-editor</code></td><td>Items, sections, theming, templates, CSV/JSON import, Canva, buttons</td><td>restaurant_owner · franchise_manager · admin</td><td>—</td></tr>
+    <tr><td class="fname"><code>/inventory</code></td><td>13-tab inventory &amp; procurement console</td><td>restaurant_owner · franchise_manager · admin</td><td>—</td></tr>
+    <tr><td class="fname"><code>/franchise</code></td><td>Client-wide overview, users, QR, performance</td><td>franchise_manager · admin</td><td>—</td></tr>
+    <tr><td class="fname"><code>/admin</code></td><td>Platform console: clients, restaurants, users, QR provisioning</td><td>admin</td><td>—</td></tr>
+    <tr><td class="fname"><code>/mcp</code> + <code>/.mcp/*</code></td><td>MCP server endpoint + tool discovery</td><td>OAuth (Supabase issuer), then RLS</td><td>—</td></tr>
+    <tr><td class="fname"><code>/.lovable/oauth/consent</code></td><td>OAuth consent screen for MCP clients</td><td>Authenticated (redirects to /login)</td><td>—</td></tr>
+  </tbody>
+</table></div>
+
+<p>Roles: <code>admin</code> (platform), <code>franchise_manager</code> (one client’s restaurants), <code>restaurant_owner</code>, <code>service_manager</code>, <code>waiter</code>, <code>kitchen</code>, <code>customer</code> (fallback only — real customers never authenticate). Multi-tenancy hierarchy: <strong>clients → restaurants → floors → tables</strong>, with staff placed via <code>user_restaurant_assignments</code>.</p>
+
+<h2 id="features"><span class="sec">03</span>Feature catalog</h2>
+<div class="legend">
+  <span class="chip working">working</span> fully wired to Supabase ·
+  <span class="chip partial">partial</span> works with real caveats ·
+  <span class="chip stub">stub</span> UI/schema exists, backend fake or absent ·
+  <span class="chip disabled">disabled</span> present but dead/off
+</div>
+
+<h3>Guest ordering — QR scan → menu → order → bill</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">QR → table resolution</td><td><span class="chip working">working</span></td><td><code>/t/{token}</code> looks up <code>tables</code> by <code>qr_token</code>; rejects invalid/inactive tables</td></tr>
+    <tr><td class="fname">Anonymous guest session</td><td><span class="chip working">working</span></td><td>Find-or-create <code>table_sessions</code>, insert <code>session_participants</code> (random “Guest NNN”, DB-issued <code>guest_token</code>), persist bundle to localStorage; table flips to <em>occupied</em>. No Supabase Auth involved</td></tr>
+    <tr><td class="fname">Classic menu browsing</td><td><span class="chip working">working</span></td><td>Available items + category filter chips; themed by <code>restaurant_menu_config</code></td></tr>
+    <tr><td class="fname">Canva-designed menu</td><td><span class="chip partial">partial</span></td><td>When <code>template_key='canva'</code>: page images + tappable hotspots at normalized coords; text labels overlay original design “best-effort”</td></tr>
+    <tr><td class="fname">Programmable request buttons</td><td><span class="chip working">working</span></td><td>Driven by <code>request_templates</code> (label, kind, target_role, <code>{table}</code> message template); defaults “Call waiter” + “Check”; inserts <code>table_requests</code></td></tr>
+    <tr><td class="fname">Cart</td><td><span class="chip working">working</span></td><td>localStorage + custom window event sync; <em>not scoped to table/restaurant</em> (stale-cart risk)</td></tr>
+    <tr><td class="fname">Per-item special requests</td><td><span class="chip stub">stub</span></td><td>Schema + display exist; no customer UI ever sets it</td></tr>
+    <tr><td class="fname">Order placement</td><td><span class="chip partial">partial</span></td><td>Client-computed prices/totals written directly; tax/tip hardcoded 0; two inserts non-transactional</td></tr>
+    <tr><td class="fname">Live order tracking</td><td><span class="chip working">working</span></td><td>Realtime on <code>orders</code> + <code>order_items</code>; kitchen/waiter changes appear live</td></tr>
+    <tr><td class="fname">Bill with 3 settlement modes</td><td><span class="chip working">working</span></td><td>Pay all / split equally / pay mine, with per-guest itemized tab and equal-share math</td></tr>
+    <tr><td class="fname">Payment execution</td><td><span class="chip stub">stub</span></td><td>No processor. “Pay” = customer’s browser UPDATEs orders to <code>completed</code> + staff notification; “split” only notifies</td></tr>
+    <tr><td class="fname">Guest session exit</td><td><span class="chip disabled">disabled</span></td><td><code>clearGuestSession()</code> exists but is never called from any UI</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Staff operations — kitchen · waiter · service · owner</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">Kitchen board (3 columns)</td><td><span class="chip partial">partial</span></td><td>New/Preparing/Ready queues, advances <code>pending→preparing→ready</code>; shows special requests + removed ingredients. <em>No role guard, no restaurant scoping</em> — relies on RLS</td></tr>
+    <tr><td class="fname">Waiter console</td><td><span class="chip working">working</span></td><td>Role-gated; restaurant picker; parallel load of tables, open requests, open items</td></tr>
+    <tr><td class="fname">Request handling</td><td><span class="chip working">working</span></td><td>“Done” completes in one step (<code>completed_at</code>, <code>handled_by</code>); friendly labels per request type</td></tr>
+    <tr><td class="fname">Delivery tabs + mark served</td><td><span class="chip working">working</span></td><td>Ready/Preparing grouped per table; per-item or bulk “Delivered” sets <code>served</code> + <code>served_by</code>; ETA = max prep time</td></tr>
+    <tr><td class="fname">“Group by table proximity”</td><td><span class="chip partial">partial</span></td><td>Just numeric table-number sort — no spatial data</td></tr>
+    <tr><td class="fname">Waiter shift sessions</td><td><span class="chip partial">partial</span></td><td><code>waiter_sessions</code> insert on open; close is best-effort (beforeunload) — leaks on crash/mobile</td></tr>
+    <tr><td class="fname">Service floor grid + assignment</td><td><span class="chip working">working</span></td><td>Live ready/prep badges per table; assign waiter via <code>tables.assigned_waiter_id</code>; on-shift dots</td></tr>
+    <tr><td class="fname">Service kitchen monitor</td><td><span class="chip working">working</span></td><td>Read-only queue with ETAs; no transitions exposed (separation of duties)</td></tr>
+    <tr><td class="fname">Service staffing overview</td><td><span class="chip working">working</span></td><td>Client-wide waiter roster, assigned tables, On shift/Off badges</td></tr>
+    <tr><td class="fname">Request reassignment</td><td><span class="chip working">working</span></td><td>Manager reassigns <code>handled_by</code> only; cannot complete requests</td></tr>
+    <tr><td class="fname">Owner KPI dashboard</td><td><span class="chip partial">partial</span></td><td>Today’s orders/revenue, tables, open orders — computed over last 50 orders only; undercounts on busy days</td></tr>
+    <tr><td class="fname">Owner hub</td><td><span class="chip working">working</span></td><td>Links to kitchen/waiter/service/menu-editor/inventory; embeds Staff, Buttons, QR, Payments, Performance tabs</td></tr>
+    <tr><td class="fname">Waiter performance (7d)</td><td><span class="chip partial">partial</span></td><td>Reads <code>waiter_performance</code> aggregate; its population mechanism (view/trigger) is not in the repo</td></tr>
+    <tr><td class="fname">Realtime refresh everywhere</td><td><span class="chip working">working</span></td><td>Coarse pattern: any change → refetch all; <code>order_items</code>/<code>waiter_sessions</code> subscriptions unfiltered</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Admin console · franchise dashboard · auth</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">Login + role redirect</td><td><span class="chip working">working</span></td><td><code>signInWithPassword</code>; safe <code>?next=</code> (open-redirect guarded); routes via <code>ROLE_HOME</code></td></tr>
+    <tr><td class="fname">useAuth profile hook</td><td><span class="chip working">working</span></td><td>Session + <code>public.users</code> profile (role, client_id) drives all scoping</td></tr>
+    <tr><td class="fname">Profile fallback / admin email backdoor</td><td><span class="chip partial">partial</span></td><td>If <code>users</code> row unreadable, client-side profile is synthesized; <code>erkucman@gmail.com</code> hardcoded as admin (UI-only; RLS still applies)</td></tr>
+    <tr><td class="fname">Admin overview stats</td><td><span class="chip working">working</span></td><td>Head+count queries: clients, restaurants, users, tables</td></tr>
+    <tr><td class="fname">Client (tenant) management</td><td><span class="chip partial">partial</span></td><td>List + create only; contact name shoehorned into <code>address</code>; no edit/deactivate/subscription mgmt</td></tr>
+    <tr><td class="fname">Restaurant management</td><td><span class="chip partial">partial</span></td><td>Per-client list + create; multi-select checkboxes promise bulk actions that don’t exist</td></tr>
+    <tr><td class="fname">Users manager (shared)</td><td><span class="chip working">working</span></td><td>Role/client/restaurant editing, search, invite, deactivate, soft remove, password reset; only first assignment surfaced — edits replace <em>all</em> assignments with one</td></tr>
+    <tr><td class="fname">Invites (magic link)</td><td><span class="chip partial">partial</span></td><td><code>pending_invites</code> upsert + OTP link; the DB trigger that provisions the user on first sign-in is <em>not in the repo</em></td></tr>
+    <tr><td class="fname">QR provisioning</td><td><span class="chip working">working</span></td><td>Floors; bulk 1–50 tables (gap-filling numbers); QR PNGs client-side; print sheets; download-all. <code>qr_token</code> comes from a DB default; no rotate/revoke</td></tr>
+    <tr><td class="fname">Franchise dashboard</td><td><span class="chip working">working</span></td><td>Client-scoped; quick links to menu-editor/inventory/service; users + QR + performance tabs</td></tr>
+    <tr><td class="fname">Franchise overview</td><td><span class="chip partial">partial</span></td><td>Revenue = fetch <em>every</em> client order row, sum in browser; no date filter</td></tr>
+    <tr><td class="fname">Buttons manager</td><td><span class="chip working">working</span></td><td>CRUD for guest request buttons: kind, target-role routing, <code>{table}</code>/<code>{label}</code> templates, live preview, sort, active toggle</td></tr>
+    <tr><td class="fname">RoleStubPage</td><td><span class="chip disabled">disabled</span></td><td>“Phase 2” placeholder; no route imports it — dead code</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Menu editor</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">Item CRUD drawer</td><td><span class="chip working">working</span></td><td>Name, description, price, prep time, category, image upload (Storage <code>menu-assets</code>), dietary tags, ingredients, nutrition, Featured/Available</td></tr>
+    <tr><td class="fname">Removable-ingredient linkage</td><td><span class="chip partial">partial</span></td><td>The app’s <em>only</em> item-customisation mechanism (no modifier/option groups); hardcodes <code>quantity_used=1, is_removable=true</code> on every save — destroys richer recipe values set in Inventory</td></tr>
+    <tr><td class="fname">Availability + bulk toggle</td><td><span class="chip working">working</span></td><td>Row switch; multi-select bulk mark (un)available</td></tr>
+    <tr><td class="fname">Drag-and-drop reorder</td><td><span class="chip working">working</span></td><td>dnd-kit within category; N parallel <code>sort_order</code> updates</td></tr>
+    <tr><td class="fname">Sections CRUD</td><td><span class="chip working">working</span></td><td>Create (auto-slug), rename (update per keystroke), hide, reorder, delete; items link by <em>category string</em>, not FK — orphan categories vanish from editor and preview</td></tr>
+    <tr><td class="fname">Theming + autosave</td><td><span class="chip working">working</span></td><td>Colors, 10 fonts, hero image/text, layout toggles; 600 ms debounced upsert of the single <code>restaurant_menu_config</code> row</td></tr>
+    <tr><td class="fname">Live preview</td><td><span class="chip partial">partial</span></td><td>Ignores <code>template_key</code>, allergen/dietary toggles, category_display; items fetched once (stale after edits); currency hardcoded “$”</td></tr>
+    <tr><td class="fname">Template gallery</td><td><span class="chip working">working</span></td><td>From <code>menu_templates</code>; ⚠ Customiser’s full-row autosave can silently overwrite a just-picked template (race)</td></tr>
+    <tr><td class="fname">CSV/JSON import</td><td><span class="chip working">working</span></td><td>papaparse + column mapping with auto-guess + preview; no dupe detection; <code>sort_order</code> collides with existing items</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Canva menu import pipeline</h3>
+<p class="kicker">Despite the name, there is <strong>no Canva API, no AI, and no OCR</strong> — the operator exports a PDF/PPTX/image from Canva and the browser parses it with heuristics.</p>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">PDF parsing</td><td><span class="chip working">working</span></td><td>The primary path: pdfjs-dist rasterizes pages to JPEG + extracts positioned text fragments</td></tr>
+    <tr><td class="fname">Item recognition</td><td><span class="chip working">working</span></td><td>Pure heuristics: Y-row bucketing + price-regex delimiter → {name, price, bbox} blocks; handles multi-column; descriptions never extracted; detected categories dropped on save</td></tr>
+    <tr><td class="fname">Fuzzy match to existing items</td><td><span class="chip working">working</span></td><td>Bigram Dice similarity + price tiebreak; thresholds for exact/strong/suggest/new</td></tr>
+    <tr><td class="fname">Review screen</td><td><span class="chip working">working</span></td><td>Per-block link/create/skip with color-coded overlays; opt-in DB price sync on mismatch; saving auto-activates the design</td></tr>
+    <tr><td class="fname">Persistence + item creation</td><td><span class="chip working">working</span></td><td>Design → pages (Storage <code>menu-canva</code>) → placeholders; “create” inserts real <code>menu_items</code></td></tr>
+    <tr><td class="fname">Customer hotspot renderer</td><td><span class="chip working">working</span></td><td>Normalized-coordinate hotspots add to the same cart as the classic menu</td></tr>
+    <tr><td class="fname">Manual hotspot mapper</td><td><span class="chip partial">partial</span></td><td>Draw/link/delete works; move/resize wired but unreachable (dead <code>onMove</code>) — mispositioned hotspots must be redrawn</td></tr>
+    <tr><td class="fname">PPTX parsing</td><td><span class="chip partial">partial</span></td><td>Wireframe fallback render only (real slide rendering infeasible client-side); recognition finds nothing → fully manual</td></tr>
+    <tr><td class="fname">Image upload</td><td><span class="chip partial">partial</span></td><td>No OCR — re-encode only, manual hotspots</td></tr>
+    <tr><td class="fname">Legacy <code>{{token}}</code> path</td><td><span class="chip disabled">disabled</span></td><td>Token extraction still runs but its save function is never called — vestigial first-generation design</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Inventory &amp; procurement (13-tab console)</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">Dashboard KPIs</td><td><span class="chip working">working</span></td><td>Low stock, expiring (7d), active alerts, pending POs, waste this month</td></tr>
+    <tr><td class="fname">Ingredients CRUD + import</td><td><span class="chip working">working</span></td><td>SKU/barcode, cost, stock, thresholds, expiry, allergens; CSV/JSON import with column mapping. “AI import” tab: <span class="chip disabled">disabled</span> (“coming soon”)</td></tr>
+    <tr><td class="fname">Recipes + dish costing</td><td><span class="chip working">working</span></td><td>Per-menu-item ingredient quantities; dish cost, suggested price (33% food-cost), margin badge (≥60% good / ≥30% ok)</td></tr>
+    <tr><td class="fname">Auto stock deduction on serve</td><td><span class="chip working">working</span></td><td><strong>DB trigger</strong> (SECURITY DEFINER): item served → atomic stock decrement per recipe + <code>inventory_log</code> + alert arming. The only atomic write path in the app</td></tr>
+    <tr><td class="fname">Suppliers + catalogs</td><td><span class="chip working">working</span></td><td>Contacts, lead time, payment terms; per-supplier ingredient pack size/price; 12-month spend chart</td></tr>
+    <tr><td class="fname">Purchase orders</td><td><span class="chip working">working</span></td><td>Draft → sent → … → received lifecycle; “Suggested” one-click fill from below-threshold items; goods receipt bumps stock + logs; status recomputed from received quantities</td></tr>
+    <tr><td class="fname">Shopping list</td><td><span class="chip working">working</span></td><td>Below-threshold items grouped by preferred supplier; reorder qty = <code>reorder_quantity ?? max(1, threshold − stock)</code></td></tr>
+    <tr><td class="fname">Stock takes</td><td><span class="chip working">working</span></td><td>Count sheets with expected vs counted; completion applies variances + ledger entries</td></tr>
+    <tr><td class="fname">Waste log</td><td><span class="chip working">working</span></td><td>Reason + cost; deducts stock (clamped at 0) + ledger</td></tr>
+    <tr><td class="fname">Alerts</td><td><span class="chip working">working</span></td><td>Configurable low-stock/expiry rules, last-triggered tracking</td></tr>
+    <tr><td class="fname">Analytics + exports</td><td><span class="chip working">working</span></td><td>Recharts: value by category, waste by reason, top consumption (30d), waste comparison; CSV/JSON/PDF export (jsPDF — the reason the route chunk is ~940 KB)</td></tr>
+    <tr><td class="fname">Franchise aggregate</td><td><span class="chip working">working</span></td><td>Combined stock across restaurants (matched by name+unit), waste comparison, client-wide shopping list; gated to franchise_manager/admin with client_id</td></tr>
+    <tr><td class="fname">ERP integrations</td><td><span class="chip stub">stub</span></td><td>6 providers (SAP B1, NetSuite, QuickBooks, Xero, MarketMan, Apicbase); config stored, sync log written by UI itself; “Connection storage only — sync requires backend wiring”</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Payments &amp; POS bridge</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">POS provider catalog</td><td><span class="chip working">working</span></td><td>Square, Toast, Lightspeed, Generic Webhook+HMAC — credential form metadata only; no vendor SDK/HTTP client exists</td></tr>
+    <tr><td class="fname">Connect/configure UI</td><td><span class="chip working">working</span></td><td>Upsert per (restaurant, provider); status forced “connected” without verification; credentials plaintext jsonb</td></tr>
+    <tr><td class="fname">Test connection</td><td><span class="chip stub">stub</span></td><td>Writes a fake “success” sync-log row: “adapter wiring lands in Phase C”</td></tr>
+    <tr><td class="fname">Order → POS event outbox</td><td><span class="chip working">working</span></td><td><strong>DB trigger</strong> on orders: open/update/void/check.close events queued when a “connected” integration exists</td></tr>
+    <tr><td class="fname">Event dispatcher</td><td><span class="chip stub">stub</span></td><td>Referenced in UI copy and SQL comments; <em>does not exist</em> — queue grows unboundedly in “pending”</td></tr>
+    <tr><td class="fname">Payment transactions ledger</td><td><span class="chip stub">stub</span></td><td>Full schema + viewer; zero writers (“Stripe wiring lands in Phase B”)</td></tr>
+    <tr><td class="fname">Checkout / tips / splitting</td><td><span class="chip stub">stub</span></td><td>No processor SDK, no tip columns, no split settlement model anywhere</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Platform · MCP · error handling</h3>
+<div class="tablewrap"><table>
+  <thead><tr><th>Feature</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td class="fname">SSR on Cloudflare Workers</td><td><span class="chip working">working</span></td><td>TanStack Start; Worker entry <code>src/server.ts</code>; full HTML shell + hydration; per-request QueryClient</td></tr>
+    <tr><td class="fname">Lovable build wrapper</td><td><span class="chip working">working</span></td><td><code>@lovable.dev/vite-tanstack-config</code> (exact-pinned) drives Vite/Tailwind/CF plugin; Bun with 24 h <code>minimumReleaseAge</code> supply-chain guard</td></tr>
+    <tr><td class="fname">3-layer error handling</td><td><span class="chip working">working</span></td><td>Worker try/catch + h3 swallowed-500 detection + request middleware + React boundaries → one branded 500 page; out-of-band error capture recovers real stacks</td></tr>
+    <tr><td class="fname">MCP server (“Restaurant Ops MCP”)</td><td><span class="chip working">working</span></td><td>OAuth-protected <code>/mcp</code>; 5 read-only tools (whoami, list_restaurants, list_recent_orders, get_menu, list_inventory_alerts); tools forward the caller’s JWT → <em>RLS is inherited, no new permission model</em></td></tr>
+    <tr><td class="fname">OAuth consent screen</td><td><span class="chip working">working</span></td><td>Approve/deny external MCP clients; built on Supabase’s beta <code>auth.oauth</code> API via an untyped shim</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="data"><span class="sec">04</span>Data model</h2>
+<p class="kicker">42 tables are referenced by code. Only a fraction have DDL in the repo — the canonical schema lives in the hosted Supabase project. Grouped by where their truth resides:</p>
+
+<div class="tablewrap"><table>
+  <thead><tr><th>Group</th><th>Tables</th><th>Repo coverage</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="fname">Fully defined in repo</td>
+      <td><code>pos_integrations</code> · <code>pos_event_queue</code> · <code>pos_sync_log</code> · <code>payment_transactions</code> · <code>menu_canva_designs</code> · <code>menu_canva_pages</code> · <code>menu_canva_placeholders</code></td>
+      <td>DDL + RLS + grants (payments.sql, canva_menus.sql)</td>
+    </tr>
+    <tr>
+      <td class="fname">Patched by repo, table pre-existing</td>
+      <td><code>orders</code> (+POS/paid columns) · <code>request_templates</code> (+target_role, message_template) · <code>table_requests</code> (+target_role) · <code>suppliers</code> (+restaurant_id) · <code>restaurant_menu_config</code> (+canva_design_id)</td>
+      <td>ALTERs only</td>
+    </tr>
+    <tr>
+      <td class="fname">RLS in repo, DDL pre-existing</td>
+      <td>14 inventory tables: <code>ingredients</code> · <code>ingredient_categories</code> · <code>supplier_ingredients</code> · <code>purchase_orders</code> · <code>purchase_order_items</code> · <code>stock_takes</code> · <code>stock_take_items</code> · <code>waste_log</code> · <code>erp_integrations</code> · <code>erp_sync_log</code> · <code>inventory_alerts</code> · <code>inventory_log</code> · <code>menu_item_ingredients</code> (+ suppliers above)</td>
+      <td>Policies only (inventory.sql)</td>
+    </tr>
+    <tr>
+      <td class="fname">Assumed pre-existing — <strong>no DDL, no RLS in repo</strong></td>
+      <td>Core domain: <code>users</code> · <code>user_restaurant_assignments</code> · <code>pending_invites</code> · <code>clients</code> · <code>restaurants</code> · <code>floors</code> · <code>tables</code> · <code>table_sessions</code> · <code>session_participants</code> · <code>orders</code> · <code>order_items</code> · <code>menu_items</code> · <code>menu_sections</code> · <code>menu_templates</code> · <code>dietary_tags</code> · <code>menu_item_dietary_tags</code> · <code>waiter_sessions</code> · <code>waiter_performance</code></td>
+      <td>Reconstructed from code usage only</td>
+    </tr>
+  </tbody>
+</table></div>
+
+<h3>Server-side logic (the only two places)</h3>
+<ul>
+  <li><strong><code>deduct_inventory_on_serve</code></strong> — AFTER UPDATE on <code>order_items</code>: on transition to <code>served</code>, atomically decrements each recipe ingredient’s stock, writes <code>inventory_log</code> (<code>order_consumption</code>), and touches matching active low-stock alerts.</li>
+  <li><strong><code>enqueue_pos_event</code></strong> — AFTER INSERT/UPDATE on <code>orders</code>: queues <code>order.open</code> / <code>order.update</code> / <code>order.void</code> / <code>check.close</code> into <code>pos_event_queue</code> when the restaurant has a connected POS integration. (Nothing drains the queue.)</li>
+</ul>
+
+<h3>Order pipeline and the inventory hook</h3>
+<div class="diagram">
+<pre class="mermaid">
+flowchart LR
+  O["Guest order<br/>orders + order_items"] --> K["Kitchen<br/>pending → preparing → ready"]
+  K --> W["Waiter<br/>ready → served + served_by"]
+  W --> TRG["DB trigger"]
+  TRG --> DED["ingredients stock<br/>-= recipe qty × items"]
+  DED --> LG["inventory_log<br/>order_consumption"]
+  DED --> AL["low-stock alerts armed"]
+  O -.-> PQ["pos_event_queue<br/>(orders trigger)"]
+  PQ -.-> DX["dispatcher: does not exist"]
+</pre>
+</div>
+
+<h3>Storage, realtime, missing objects</h3>
+<ul>
+  <li><strong>Buckets:</strong> <code>menu-canva</code> (created in repo; public read; ⚠ any authenticated user can write/delete <em>any</em> object, cross-tenant) · <code>menu-assets</code> (item/hero images; created outside the repo, policies unknown).</li>
+  <li><strong>Realtime channels:</strong> <code>order:{id}</code>, <code>kitchen-board</code> (fully unfiltered), <code>waiter-{rid}</code>, <code>svc-{rid}</code>, <code>owner-orders-{rid}</code>. All handlers refetch everything on any event.</li>
+  <li><strong>Assumed but absent from repo:</strong> RLS helper functions (<code>get_my_role</code>, <code>is_restaurant_staff</code>, <code>is_my_client_restaurant</code>, <code>can_manage_restaurant</code>…), the <code>user_role</code> enum, the invite-consuming signup trigger, the <code>waiter_performance</code> view, every anon policy powering the guest flow, realtime publication membership. <strong>A fresh environment cannot be rebuilt from this repo alone.</strong></li>
+  <li><strong>Drift signal:</strong> the MCP <code>get_menu</code> tool selects <code>menu_items.section_id</code>, a column no other code or migration knows.</li>
+</ul>
+
+<h2 id="architecture"><span class="sec">05</span>Architecture decisions that define the system</h2>
+<ol>
+  <li><strong>RLS is the entire security model.</strong> Every query runs in the browser with a public key (staff add their JWT). Client-side route guards are UX, not security. The repo’s own policies (inventory, payments, canva) follow a consistent three-tier pattern — admin / franchise client / restaurant staff — but the core-domain policies live only in the hosted database.</li>
+  <li><strong>SSR shell, client data.</strong> TanStack Start on Cloudflare Workers renders pages, but no route loader or server function touches data. React Query is provisioned per request yet effectively unused by feature code — components fetch with <code>useEffect</code>+<code>useState</code> and refetch-on-mutation.</li>
+  <li><strong>Anonymous-by-design guests.</strong> Customers never authenticate. Identity = localStorage bundle + DB-issued <code>guest_token</code> stamped onto orders; attribution (whose orders on the bill) is by token match. Cheap and frictionless; also the root of the payment-trust gap.</li>
+  <li><strong>Item-level order lifecycle.</strong> Kitchen and waiter operate on <code>order_items.status</code> (pending→preparing→ready→served); order-level <code>completed</code> exists only in the guest “payment” flip. No staff screen ever closes an order.</li>
+  <li><strong>Where computation lives:</strong> order-driven stock math → DB trigger (atomic); staff actions (receive PO, waste, stock take) → client-side read-modify-write loops (non-transactional, race-prone); analytics/KPIs → client-side reduction over fetched rows (franchise revenue fetches every order; owner KPIs sample last 50).</li>
+  <li><strong>The app is an AI-agent backend.</strong> The MCP server exposes read-only ops data behind OAuth with the user’s own JWT forwarded to Postgres — agents automatically inherit exactly the user’s RLS permissions. The most forward-looking decision in the codebase, and it required no new authorization model.</li>
+  <li><strong>Staged vitrine strategy.</strong> Payments (“Phase B”), POS adapters (“Phase C”), ERP sync, and AI import all have finished UI + schema but no engine — the schema (event outbox, transactions ledger) is deliberately dispatcher-shaped, waiting for a server-side worker that doesn’t exist yet.</li>
+  <li><strong>Config-over-code menu presentation.</strong> One <code>restaurant_menu_config</code> row per restaurant switches template (classic vs Canva), theme, and layout; both the Customiser and TemplatePicker upsert the same row (a known overwrite race).</li>
+  <li><strong>Manual-SQL migration culture.</strong> Four idempotent SQL-editor scripts, no supabase CLI chain, no baseline; plus two auto-generated MCP route files owned by the Lovable Vite plugin. The database, not the repo, is the source of truth for schema.</li>
+</ol>
+
+<h2 id="maturity"><span class="sec">06</span>Maturity map — what is real vs vitrine</h2>
+<div class="callout">
+  <strong>Real and demonstrable today:</strong> the full guest→kitchen→waiter→inventory loop with live updates; QR provisioning and printing; menu authoring (items, sections, theming, CSV import, PDF-based Canva import); procurement (suggested orders → PO → receipt); stock takes, waste, alerts, analytics and exports; multi-tenant admin with role scoping; the MCP server.
+</div>
+<div class="callout warn">
+  <strong>Vitrine (looks enterprise, no engine):</strong> payment processing (no processor — guests settle by flipping order status), POS sync (outbox fills, dispatcher absent), ERP sync (config + self-written log only), AI import (disabled tab). Demo narratives should not lean on these four.
+</div>
+<ul>
+  <li><strong>Dead code:</strong> <code>RoleStubPage</code>, <code>clearGuestSession</code>, legacy Canva token path (<code>saveParsedDesign</code>), placeholder move/resize, <code>payment.captured</code> enum member, unused admin bulk-select.</li>
+  <li><strong>Identity trivia:</strong> the app carries three names — package <code>tanstack_start_ts</code>, Worker <code>tanstack-start-app</code>, user-facing “Restaurant POC” (meta description even says “Cloud Connect”).</li>
+  <li><strong>No tests, no CI</strong> anywhere; quality gates are eslint + prettier.</li>
+</ul>
+
+<h2 id="risks"><span class="sec">07</span>Risks &amp; gaps, ranked</h2>
+<ol>
+  <li><strong>Client-authoritative money.</strong> Order prices/totals come from localStorage; the anonymous guest browser can UPDATE orders to <code>completed</code> (“paying” without paying), and <code>/check</code> is table-scoped, so a guest can close a previous party’s orders. Tax/tip hardcoded 0; no payment record is ever written.</li>
+  <li><strong>Repo cannot rebuild the system.</strong> ~35 of 42 tables, all anon policies, helper functions, the invite trigger, and one bucket exist only in the hosted Supabase project. Any environment loss or fork depends on exporting the live schema first.</li>
+  <li><strong>Plaintext third-party credentials in row-readable tables.</strong> <code>pos_integrations.config</code> (readable by all restaurant staff per its own RLS) and <code>erp_integrations.config</code> hold API keys/secrets with no vault; they also transit the browser.</li>
+  <li><strong>Tenant-boundary soft spots.</strong> <code>menu-canva</code> bucket writable bucket-wide by any authenticated user; inventory read policies expose <code>restaurant_id IS NULL</code> rows to everyone; <code>/kitchen</code> has no role guard and no restaurant scoping; unfiltered realtime subscriptions (<code>kitchen-board</code>, <code>order_items</code>, <code>waiter_sessions</code>) lean entirely on live-DB RLS.</li>
+  <li><strong>Non-transactional multi-step writes.</strong> Order + items insert, PO receiving, stock-take completion, waste logging, join-table delete-then-reinsert (tags/ingredients), Canva design save — all can fail mid-sequence and leave inconsistent state; stock updates from staff actions are read-modify-write races.</li>
+  <li><strong>Unbounded growth.</strong> <code>pos_event_queue</code> accumulates forever once any integration is “connected”; waiter shift sessions leak open on crashes; deleted Canva designs orphan storage files.</li>
+  <li><strong>Correctness papercuts.</strong> Owner KPIs sample last 50 orders; two different “today” definitions (local vs UTC); recipe values overwritten by the menu editor (qty=1); imported items can vanish (category↔section string mismatch); template-choice overwrite race; cart survives across restaurants; participant count inflates split math; hardcoded admin email fallback; hardcoded Supabase keys in six files (publishable — configurability issue, not a leak).</li>
+</ol>
+
+<p class="foot">Compiled 2026-08-15 from the local source at <span class="mono">10-projects/qrpoc/loveable prototype</span> — a read-only pass over every non-boilerplate file (8 parallel subsystem readers + a prior deep read of the inventory module and public production bundle). The live UI behind “Staff sign in” has not yet been walked; visual/interaction QA is pending credentials. This document records what the code does, not product requirements.</p>
+
+</main>
